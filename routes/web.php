@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,17 +53,46 @@ Route::get('/FAQs', function () {
     ]);
 });
 
+// LOGIN //
+
+Route::get('/login', [UserController::class, 'index'])
+    ->name('login')
+    ->middleware('guest');
+
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/logout', [UserController::class, 'logout']);
+
 // BACK END //
 
-Route::get('/login', function () {
-    return view('login');
+// Dashboard
+
+Route::get('dashboard/home', function () {
+    return view('dashboard.index');
 });
-Route::get('/dashboard/home', function () {
-    return view('dashboard.home');
+Route::get('dashboard/', function () {
+    return view('dashboard.index');
 });
+
 Route::get('dashboard/users', function () {
     return view('dashboard.users.user');
 });
-Route::get('sales/orders', function () {
-    return view('dashboard.sales.orders');
+
+// Transaction
+Route::get('trx/orders', function () {
+    return view('dashboard.transaction.orders');
 });
+Route::get('trx/', function () {
+    return view('dashboard.transaction.orders');
+});
+Route::get('trx/sales', function () {
+    return view('dashboard.transaction.sales');
+});
+Route::get('trx/settlement', function () {
+    return view('dashboard.transaction.settlement');
+});
+Route::get('trx/ticket', function () {
+    return view('dashboard.transaction.ticket');
+});
+
+// User
+Route::get('/users', [UserController::class, 'show']);

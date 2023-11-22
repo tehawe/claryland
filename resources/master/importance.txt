@@ -1,0 +1,24 @@
+Claryland Module
+
+Authenticate
+-login
+-logout
+	
+dashboard (authenticate)
+- users (CRUD)
+
+- report
+> daily (CRUD)
+> montnly (CRUD)
+
+
+sales (authenticate)
+- order
+- create ticket
+- print ticket
+- settlement
+
+boarding
+- scan ticket in
+- scan ticket out
+- status
