@@ -2,47 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\user;
+use App\Models\User;
 use Illuminate\Http\Request;
-use illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
-    /**
-     * Login 
-     */
-    public function login(Request $request)
-    {
-        $credentials = $request->validate([
-            'username' => 'required',
-            'password' => 'required'
-        ]);
-
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            return redirect()->intended('dashboard');
-        }
-        return back()->with('loginError', 'Login Failed!');
-    }
-
-    /**
-     * Logout 
-     */
-    public function logout(Request $request)
-    {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        return redirect('/');
-    }
-
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('login', [
-            'title' => 'Login',
+        return view('dashboard.users.index', [
+            'title' => 'Users',
+            'users' => User::orderBy('access_type', 'desc')->get(),
         ]);
     }
 
@@ -51,7 +25,9 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.users.create', [
+            'title' => 'Users',
+        ]);
     }
 
     /**
@@ -59,37 +35,83 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = $request->validate([
+            'name' => ['required', 'max:255'],
+            'contact' => ['required', 'unique:users'],
+            'email' => ['required', 'email:dns', 'unique:users'],
+            'access_type' => ['required'],
+        ]);
+        $username = Str::of($user['email'])->explode('@');
+        $user['username'] = $username[0];
+        $user['password'] = bcrypt('password');
+
+        User::create($user);
+        $request->session()->flash('success', 'Add user success.');
+        return redirect('/dashboard/users');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(user $user)
+    public function show(User $user)
     {
-        //
+        return view('dashboard.users.show', [
+            'title' => 'User',
+            'user' => $user,
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(user $user)
+    public function edit(User $user)
     {
-        //
+        return view('dashboard.users.edit', [
+            'title' => 'User',
+            'user' => $user,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, user $user)
+    public function update(Request $request, User $user)
     {
-        //
+        $rules = [];
+        // Data User
+        if ($request->name != $user->name) {
+            $rules['name'] = ['required', 'max:255'];
+        }
+        if ($request->email != $user->email) {
+            $rules['email'] = ['required', 'unique:users'];
+        }
+        if ($request->contact != $user->contact) {
+            $rules['contact'] = ['required', 'unique:users'];
+        }
+        if ($request->username != $user->username) {
+            $rules['username'] = ['required', 'unique:users'];
+        }
+
+        // Access Type
+        if ($request->access_type != $user->access_type) {
+            $rules['access_type'] = ['required'];
+        }
+
+        // Status Active
+        if ($request->active != $user->active) {
+            $rules['active'] = ['required'];
+        }
+
+        $dataNew = $request->validate($rules);
+
+        User::where('username', $user->username)->update($dataNew);
+        return redirect('/dashboard/users/' . $request->username)->with('success', 'User has been updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(user $user)
+    public function destroy(Request $request, User $user)
     {
         //
     }

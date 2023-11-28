@@ -22,11 +22,13 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         User::factory()->create([
-            'name' => 'ClaryLand Playground',
+            'name' => 'ClaryLand',
             'email' => 'claryland@example.com',
             'username' => 'claryland',
+            'contact' => '081234567890',
             'password' => bcrypt('090906'), // Default "090906"
-            'access_type' => 0,
+            'access_type' => 1,
+            'active' => 1,
         ]);
     }
 }

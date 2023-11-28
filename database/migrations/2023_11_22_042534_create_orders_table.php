@@ -13,16 +13,21 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('childCompanion', 255)->nullable(false);
-            $table->integer('qty')->nullable(false);
-            $table->bigInteger('price')->nullable(false);
+            // Customer Detail
+            $table->string('customer_name', 255)->nullable(false);
+            $table->string('customer_contact', 15)->nullable(false);
+            $table->string('customer_email', 255)->nullable(false);
+            // Transactions
+            $table->bigInteger('total');
             $table->string('payment_method', 1)->nullable(false);
+            $table->bigInteger('payment')->nullable(false);
 
-            $table->unsignedBigInteger("user_id")->nullable(false);
-            $table->unsignedBigInteger("package_id")->nullable(false);
+            $table->unsignedBigInteger('user_id')->nullable(false);
+            $table->unsignedBigInteger('package_id')->nullable(false);
 
             $table->timestamps();
 
+            // ForeignKey
             $table->foreign('user_id')->on('users')->references('id');
             $table->foreign('package_id')->on('packages')->references('id');
         });

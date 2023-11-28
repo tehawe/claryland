@@ -13,7 +13,10 @@ class PackageController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.packages.index', [
+            'title' => 'Packages',
+            'packages' => Package::orderBy('name', 'asc')->get(),
+        ]);
     }
 
     /**
@@ -21,7 +24,9 @@ class PackageController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.packages.create', [
+            'tittle' => 'Packages',
+        ]);
     }
 
     /**

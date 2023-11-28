@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\Package;
 use App\Http\Requests\StoreOrderRequest;
 use App\Http\Requests\UpdateOrderRequest;
 
@@ -13,7 +14,10 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.transactions.orders.index', [
+            'title' => 'Orders',
+            'orders' => Order::orderBy('id', 'desc')->get(),
+        ]);
     }
 
     /**
@@ -21,7 +25,10 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.transactions.orders.create', [
+            'title' => 'Order',
+            'packages' => Package::where('status', 1)->get(),
+        ]);
     }
 
     /**

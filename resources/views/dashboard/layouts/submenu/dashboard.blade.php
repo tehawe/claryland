@@ -8,7 +8,16 @@
             <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" href="/dashboard/">Dashboard</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/sales">sales</a>
+            <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/sales">Sales</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/categories">Category</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/products">Product</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/packages">Package</a>
         </li>
         <li class="nav-item">
             <a class="nav-link d-flex align-items-center gap-2" href="/dashboard/users">Users</a>

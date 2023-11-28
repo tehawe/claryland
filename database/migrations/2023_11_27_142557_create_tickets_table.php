@@ -14,14 +14,15 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->string('ticket_number', 8)->unique("ticket_number_unique");
-            $table->string('childName', 255)->nullable(false);
+            $table->string('name', 255)->nullable(false);
             $table->integer('age')->nullable(false);
             $table->timestamp('check_in')->nullable(false);
-            $table->timestamp('check_out')->nullable();
-            $table->unsignedBigInteger("order_id")->nullable(false);
+            $table->unsignedBigInteger("order_id");
+            $table->unsignedBigInteger("item_id");
             $table->timestamps();
 
             $table->foreign('order_id')->on('orders')->references('id');
+            $table->foreign('item_id')->on('items')->references('id');
         });
     }
 

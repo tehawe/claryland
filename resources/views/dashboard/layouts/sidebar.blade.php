@@ -8,7 +8,6 @@
             @include('dashboard.layouts.submenu.transaction')
             @include('dashboard.layouts.submenu.dashboard')
             @include('dashboard.layouts.submenu.report')
-            @include('dashboard.layouts.submenu.user')
         </div>
     </div>
 </div>

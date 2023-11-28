@@ -1,6 +1,13 @@
 <?php
 
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\PasswordController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -55,44 +62,59 @@ Route::get('/FAQs', function () {
 
 // LOGIN //
 
-Route::get('/login', [UserController::class, 'index'])
+Route::get('/login', [LoginController::class, 'index'])
     ->name('login')
     ->middleware('guest');
 
-Route::post('/login', [UserController::class, 'login']);
-Route::post('/logout', [UserController::class, 'logout']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
 
 // BACK END //
 
 // Dashboard
 
-Route::get('dashboard/home', function () {
+Route::get('/dashboard/home', function () {
     return view('dashboard.index');
-});
+})->middleware('auth');
 Route::get('dashboard/', function () {
     return view('dashboard.index');
-});
+})->middleware('auth');
 
-Route::get('dashboard/users', function () {
-    return view('dashboard.users.user');
-});
+// Users
+Route::resource('/dashboard/users', UserController::class)
+    ->scoped([
+        'user' => 'username',
+    ])
+    ->except('delete')
+    ->middleware('auth');
+
+// Reset Password
+Route::patch('/dashboard/users/{user:username}/password/reset', [PasswordController::class, 'update'])->middleware('auth');
+
+// Update Password
+Route::get('/dashboard/users/{user:username}/password/edit', [PasswordController::class, 'update'])->middleware('auth');
+Route::patch('/dashboard/users/password/{user:username}/update', [PasswordController::class, 'update'])->middleware('auth');
+
+// Category
+Route::resource('/dashboard/categories', CategoryController::class)->middleware('auth');
+
+// Product
+Route::resource('/dashboard/products', ProductController::class)->middleware('auth');
+
+// Packages
+Route::resource('/dashboard/packages', PackageController::class)->middleware('auth');
 
 // Transaction
-Route::get('trx/orders', function () {
-    return view('dashboard.transaction.orders');
-});
-Route::get('trx/', function () {
-    return view('dashboard.transaction.orders');
-});
-Route::get('trx/sales', function () {
-    return view('dashboard.transaction.sales');
-});
-Route::get('trx/settlement', function () {
-    return view('dashboard.transaction.settlement');
-});
-Route::get('trx/ticket', function () {
-    return view('dashboard.transaction.ticket');
-});
 
-// User
-Route::get('/users', [UserController::class, 'show']);
+// Orders
+Route::resource('/transactions/orders', OrderController::class)->middleware('auth');
+
+Route::get('/transactions/sales', function () {
+    return view('dashboard.transactions.sales');
+});
+Route::get('transactions/settlement', function () {
+    return view('dashboard.transactions.settlement');
+});
+Route::get('transactions/ticket', function () {
+    return view('dashboard.transactions.ticket');
+});
