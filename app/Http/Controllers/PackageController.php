@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Package;
-use App\Http\Requests\StorePackageRequest;
-use App\Http\Requests\UpdatePackageRequest;
+use Illuminate\Http\Request;
 
 class PackageController extends Controller
 {
@@ -32,7 +31,7 @@ class PackageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StorePackageRequest $request)
+    public function store(Request $request)
     {
         //
     }

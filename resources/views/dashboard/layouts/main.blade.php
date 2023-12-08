@@ -5,6 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="author" content="Teguh Hadiwijaya">
+    {{-- Laravel CSRF TOKEN --}}
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <title>Claryland - Dashboard</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -23,6 +26,7 @@
                 font-size: 3.5rem;
             }
         }
+
 
         .b-example-divider {
             width: 100%;
@@ -93,8 +97,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="http://127.0.0.1:8000/css/dashboard.css" rel="stylesheet">
     <link href="http://127.0.0.1:8000/css/style.css" rel="stylesheet">
+
+
+    {{-- Javascrip --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="http://127.0.0.1:8000/js/claryland.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
 </head>
 
 <body>
@@ -109,16 +121,6 @@
         </div>
     </div>
     @include('dashboard.layouts.footer')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="http://127.0.0.1:8000/js/dashboard.js"></script>
-    <script src="http://127.0.0.1:8000/js/claryland.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-    <script>
-        let table = new DataTable('#data-table');
-    </script>
 </body>
 
 </html>

@@ -4,7 +4,7 @@
     <div class="container-fluid" id="users">
         <h1>Users</h1>
         <hr color="border-primary" />
-        <a href="/dashboard/users/create" class="btn btn-primary mb-3">
+        <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">
             <i class="myicon bi-person-fill-add"></i>Add User
         </a>
         @if (session()->has('success'))
@@ -13,22 +13,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        <div id="data-user">
-            <table class="table">
-                <thead class="table-dark">
+        <div id="data-user" class="p-2 my-3 border rounded">
+            <table class="table table-sm" id="data-table">
+                <thead class="table-info">
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Contact</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Username</th>
-                        <th scope="col">Access Type</th>
-                        <th scope="col">Status</th>
-                        <th scope="col"></th>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Username</th>
+                        <th>Access Type</th>
+                        <th>Status</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody class="table-group-divider">
                     @foreach ($users as $user)
                         <tr>
+                            <td>{{ $loop->iteration }}</td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->contact }}</td>
                             <td>{{ $user->email }}</td>
@@ -37,10 +39,10 @@
                             <td>{{ $user->active == 1 ? 'Active' : 'Deactive' }}</td>
                             <td>
                                 <div class="d-flex justify-content-end">
-                                    <a href="/dashboard/users/{{ $user->username }}" class="btn btn-info btn-sm me-1">
+                                    <a href="{{ route('users.show', $user->username) }}" class="btn btn-info btn-sm me-1">
                                         <i class="bi-person-square me-1"></i>Show
                                     </a>
-                                    <a href=" /dashboard/users/{{ $user->username }}/edit" class="btn btn-warning btn-sm me-1">
+                                    <a href="{{ route('users.edit', $user->username) }}" class="btn btn-warning btn-sm me-1">
                                         <i class="bi-pencil-square me-1"></i>Edit
                                     </a>
                                 </div>
@@ -51,4 +53,9 @@
             </table>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            let table = new DataTable('#data-table');
+        });
+    </script>
 @endsection

@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarsExample03">
+        <div class="collapse navbar-collapse navbar-expand-sm" id="navbar">
             <ul class="navbar-nav ms-auto mb-2 mb-sm-0">
                 <li class="nav-item"><a class="nav-link {{ $active == 'home' ? 'active' : '' }}" href="home">Home</a></li>
                 <li class="nav-item"><a class="nav-link {{ $active == 'package' ? 'active' : '' }}" href="package">Package</a></li>

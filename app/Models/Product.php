@@ -4,10 +4,12 @@ namespace App\Models;
 
 use App\Models\Category;
 use App\Models\Stock;
+use App\Models\Item;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
@@ -32,5 +34,10 @@ class Product extends Model
     public function stocks(): HasMany
     {
         return $this->hasMany(Stock::class, 'product_id', 'id');
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'product_id', 'id');
     }
 }

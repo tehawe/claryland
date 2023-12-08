@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-5">
             <h2 class="mb-3">Update User</h2>
-            <form action="/dashboard/users/{{ $user->username }}" method="POST">
+            <form action="{{ route('users.update', $user->username) }}" method="POST">
                 @method('put')
                 @csrf
                 <div class="form-floating mb-3">
@@ -52,7 +52,7 @@
                         <label class="form-check-label" for="admin">Admin</label>
                     </div>
                 </div>
-                <div class="form-control alert alert-danger mt-3">
+                <div class="form-control alert alert-{{ $user->active ? 'success' : 'danger' }} mt-3">
                     <h6>Status</h5>
                         @error('active')
                         <div class="invalid-feedback mt-0 mb-3">{{ $message }}</div>
@@ -66,14 +66,10 @@
                             <label class="form-check-label" for="deactive">Deactive</label>
                         </div>
                 </div>
-                <div class="form-control my-3">
-                    <h6 class=" mb-1">Manage Password</h6>
-                    <a href="/dashboard/users/{{ $user->username }}/reset">Reset</a> |
-                    <a href="/dashboard/users/{{ $user->username }}/update">Update</a>
-                </div>
+
                 <div class="mt-3 d-flex justify-content-center col-sm-8">
                     <div class="my-3 d-flex justify-content-center">
-                        <a href="/dashboard/users/{{ $user->username }}" class="btn btn-warning mt-2 btn-sm me-1" id="btn-cancel"><i class="bi-arrow-left-square me-1"></i>Cancel</a>
+                        <a href="{{ route('users.show', $user->username) }}" class="btn btn-warning mt-2 btn-sm me-1" id="btn-cancel"><i class="bi-arrow-left-square me-1"></i>Cancel</a>
                         <button type="submit" class="btn btn-primary btn-sm mt-2">
                             <i class="bi-check-square me-1"></i>Update
                         </button>

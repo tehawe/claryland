@@ -5,10 +5,19 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PasswordController;
-
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\SettlementController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\TicketController;
+use App\Models\Stock;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as FacadesRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,16 +32,18 @@ use Illuminate\Support\Facades\Route;
 
 // FRONT END //
 
-Route::get('/', function () {
+Route::get('/', function (Request $request) {
     return view('home', [
         'title' => 'Home',
         'active' => 'home',
+        'info' => $request->header('User-Agent'),
     ]);
 });
-Route::get('/home', function () {
+Route::get('/home', function (Request $request) {
     return view('home', [
         'title' => 'Home',
         'active' => 'home',
+        'info' => $request->header('User-Agent'),
     ]);
 });
 Route::get('/package', function () {
@@ -62,26 +73,24 @@ Route::get('/FAQs', function () {
 
 // LOGIN //
 
-Route::get('/login', [LoginController::class, 'index'])
-    ->name('login')
-    ->middleware('guest');
+Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
 
-Route::post('/login', [LoginController::class, 'login']);
+Route::post('/login', [LoginController::class, 'login'])->middleware('guest');
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
 
 // BACK END //
 
-// Dashboard
-
+// Dashboard Route
 Route::get('/dashboard/home', function () {
     return view('dashboard.index');
-})->middleware('auth');
-Route::get('dashboard/', function () {
+})->middleware('admin');
+Route::get('/dashboard', function () {
     return view('dashboard.index');
-})->middleware('auth');
+})->middleware('admin');
+
 
 // Users
-Route::resource('/dashboard/users', UserController::class)
+Route::resource('/users', UserController::class)
     ->scoped([
         'user' => 'username',
     ])
@@ -89,32 +98,61 @@ Route::resource('/dashboard/users', UserController::class)
     ->middleware('auth');
 
 // Reset Password
-Route::patch('/dashboard/users/{user:username}/password/reset', [PasswordController::class, 'update'])->middleware('auth');
-
+Route::patch('/users/{user:username}/password/reset', [PasswordController::class, 'reset'])->name('users.password.reset')->middleware('auth');
 // Update Password
-Route::get('/dashboard/users/{user:username}/password/edit', [PasswordController::class, 'update'])->middleware('auth');
-Route::patch('/dashboard/users/password/{user:username}/update', [PasswordController::class, 'update'])->middleware('auth');
+Route::patch('/users/{user:username}/password/update', [PasswordController::class, 'update'])->name('users.password.update')->middleware('auth');
 
-// Category
-Route::resource('/dashboard/categories', CategoryController::class)->middleware('auth');
+Route::middleware('admin')->group(function () {
+    // Category
+    Route::get('/dashboard/categories/data', [CategoryController::class, 'data']);
+    Route::get('/dashboard/categories/{category:id}/remove', [CategoryController::class, 'remove']);
+    Route::resource('/dashboard/categories', CategoryController::class)->middleware('auth');
 
-// Product
-Route::resource('/dashboard/products', ProductController::class)->middleware('auth');
+    // Product
+    Route::get('/dashboard/products/data', [ProductController::class, 'data']);
+    Route::resource('/dashboard/products', ProductController::class);
 
-// Packages
-Route::resource('/dashboard/packages', PackageController::class)->middleware('auth');
+    // Stock
+    Route::get('/dashboard/products/{product:id}/stocks/data', [StockController::class, 'data']);
+    Route::get('/dashboard/products/{product:id}/stocks/in', [StockController::class, 'createStockIn']);
+    Route::get('/dashboard/products/{product:id}/stocks/out', [StockController::class, 'createStockOut']);
+    Route::post('/dashboard/products/{product:id}/stocks/', [StockController::class, 'store']);
+    Route::get('/dashboard/products/{product:id}/stocks/{stock:id}/edit', [StockController::class, 'edit']);
+    Route::patch('/dashboard/products/{product:id}/stocks/{stock:id}', [StockController::class, 'update']);
+    Route::get('/dashboard/products/{product:id}/stocks/{stock:id}/remove', [StockController::class, 'remove']);
+    Route::delete('/dashboard/products/{product:id}/stocks/{stock:id}', [StockController::class, 'destroy']);
 
-// Transaction
+    // Packages
+    Route::resource('/dashboard/packages', PackageController::class);
 
-// Orders
-Route::resource('/transactions/orders', OrderController::class)->middleware('auth');
-
-Route::get('/transactions/sales', function () {
-    return view('dashboard.transactions.sales');
+    // Reports
+    Route::get('/dashboard/reportss', [ReportController::class, 'index'])->name('reports');
 });
-Route::get('transactions/settlement', function () {
-    return view('dashboard.transactions.settlement');
+
+Route::middleware('auth')->group(function () {
+    // Transaction
+
+    // Orders
+    Route::get('/transactions/orders', [OrderController::class, 'index'])->name('orders');
+    Route::get('/transactions/orders/{order:invoice}/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/transactions/orders/{order:invoice}/store', [OrderController::class, 'store'])->name('orders.store');
+
+    Route::get('/transactions/orders/{order:invoice}/payment', [OrderController::class, 'payment'])->name('orders.payment');
+    Route::patch('/transactions/orders/{order:invoice}/payment', [OrderController::class, 'paymentProcess'])->name('orders.payment.process');
+    Route::get('/transactions/orders/{order:invoice}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/transactions/orders/{order:invoice}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
+
+    Route::resource('/sales', SalesController::class);
+    Route::resource('/settlement', SettlementController::class);
+    Route::resource('/ticket', TicketController::class);
 });
-Route::get('transactions/ticket', function () {
-    return view('dashboard.transactions.ticket');
-});
+
+// ORDER ITEM
+Route::get('/orders/{order:id}/product', [ItemController::class, 'productNotIn'])->name('orders.product.notIn');
+Route::get('/orders/{order:id}/stock/update', [StockController::class, 'updateOrderStock'])->name('orders.stock.update');
+Route::get('/orders/{order:id}/item', [ItemController::class, 'getItem'])->name('orders.items');
+Route::get('/orders/{order:id}/item/store', [ItemController::class, 'store'])->name('orders.item.store');
+Route::get('/orders/{order:id}/item/{item:id}/update', [ItemController::class, 'update'])->name('orders.item.update');
+Route::get('/orders/{order:id}/item/{item:id}/plus', [ItemController::class, 'plus'])->name('orders.item.plus');
+Route::get('/orders/{order:id}/item/{item:id}/min', [ItemController::class, 'min'])->name('orders.item.min');
+Route::get('/orders/{order:id}/item/{item:id}/delete', [ItemController::class, 'delete'])->name('orders.item.delete');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Stock;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,10 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('dashboard.products.index', [
-            'title' => 'Products',
-            'products' => Product::withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->orderBy('category_id', 'asc')->get(),
-        ]);
+        return view('dashboard.products.index')->with(['title' => 'Products']);
     }
 
     /**
@@ -26,7 +24,6 @@ class ProductController extends Controller
     public function create()
     {
         return view('dashboard.products.create', [
-            'title' => 'Products',
             'categories' => Category::orderBy('name', 'asc')->get(),
         ]);
     }
@@ -44,7 +41,7 @@ class ProductController extends Controller
         ]);
 
         Product::create($data);
-        return redirect('/dashboard/products')->with('success', 'New Product has been added.');
+        return response()->json(['success', 'Add new product success']);
     }
 
     /**
@@ -52,10 +49,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('dashboard.products.show', [
-            'title' => 'Product',
-            'product' => $product,
-        ]);
+        $data = Product::where('id', $product->id)->withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->first();
+
+        return view('dashboard.products.show')->with(['title' => 'Product', 'product' => $data]);
     }
 
     /**
@@ -63,7 +59,11 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('dashboard.products.edit', [
+            'title' => 'Product',
+            'product' => $product,
+            'categories' => Category::orderBy('name', 'asc')->get(),
+        ]);
     }
 
     /**
@@ -71,7 +71,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $rules = [
+            'price' => ['required', 'min:0'],
+            'category_id' => ['required'],
+        ];
+        if ($request->name != $product->name) {
+            $rules['name'] = ['required', 'max:255', 'unique:products'];
+        }
+
+        $dataNew = $request->validate($rules);
+        Product::where('id', $product->id)->update($dataNew);
     }
 
     /**
@@ -80,5 +89,12 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         //
+    }
+
+    public function data()
+    {
+        return view('dashboard.products.data', [
+            'products' => Product::withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->get(),
+        ]);
     }
 }

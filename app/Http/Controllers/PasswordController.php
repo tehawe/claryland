@@ -8,18 +8,23 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends Controller
 {
-    public function edit(User $user)
+
+    public function reset(Request $request, User $user)
     {
-        return view('dashboard.users.password.reset', [
-            'title' => 'Password Manager',
-            'user' => $user,
+        if ($request->email !== $user->email) { // if email not equal with existing email
+            return back()->with('errorPassword', 'Reset password failed'); // return back with error info
+        }
+        User::where('email', $user->email)->update([
+            'password' => Hash::make($user->email) // success, new password will generate by existing email using Hash
         ]);
+        return redirect()->route('users.show', $user->username)->with('successPassword', 'Reset password success'); // return to users info
     }
 
     public function update(Request $request, User $user)
     {
-        if (Hash::make($request->confirm_password) == $user->password)
-            $new_password = Hash::make($request->confirm_password);
-        dd($new_password);
+        User::where('username', $user->username)->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+        return redirect()->route('users.show', $user->username)->with('successPassword', 'Update password success');
     }
 }

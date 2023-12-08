@@ -47,7 +47,7 @@ class UserController extends Controller
 
         User::create($user);
         $request->session()->flash('success', 'Add user success.');
-        return redirect('/dashboard/users');
+        return redirect()->route('users.index');
     }
 
     /**
@@ -105,7 +105,8 @@ class UserController extends Controller
         $dataNew = $request->validate($rules);
 
         User::where('username', $user->username)->update($dataNew);
-        return redirect('/dashboard/users/' . $request->username)->with('success', 'User has been updated');
+        $request->session()->flash('success', 'Update data user success.');
+        return redirect()->route('users.show', $request->username);
     }
 
     /**

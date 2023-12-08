@@ -1,36 +1,137 @@
 @extends('dashboard.layouts.main')
 
 @section('container')
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-8">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-between border-bottom pb-3">
                 <h2>Categories</h2>
-                <hr />
-                <a href="/dashboard/categories/create" class="btn btn-primary btn-sm my-3"><i class="bi-bookmark-plus me-1"></i>Add New Category</a>
-                <div class="my-3 p-2 border rounded">
-                    <table class="table table-sm table-hover" id="data-table">
-                        <thead class="table-secondary">
-                            <tr>
-                                <th>Category Name</th>
-                                <th>Product</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($categories as $category)
-                                <tr>
-                                    <td>{{ $category->name }}</td>
-                                    <td class="text-end">{{ $category->products_count }}</td>
-                                    <td class="d-flex justify-content-end">
-                                        <a href="/dashboard/categories/{{ $category->id }}" class="btn btn-info btn-sm me-1"><i class="bi-file-earmark-check me-1"></i>Show</a>
-                                        <a href="/dashboard/categories/{{ $category->id }}/edit" class="btn btn-warning btn-sm me-1"><i class="bi-pencil-square"></i>Edit</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary btn-sm my-2" onclick="create()">
+                    <i class="bi-plus-square"></i>
+                    Add Category
+                </button>
             </div>
+
+            <div id="data" class="mt-3"></div>
+
         </div>
     </div>
+</div>
+
+
+
+<!-- Modal Category Create -->
+<div class="modal fade" id="modal-category" tabindex="-1" aria-labelledby="categoryModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modal-label"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body" id="modal-body"></div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function() {
+        data();
+    });
+
+    function data() {
+        $.get("{{ url('dashboard/categories/data') }}", {}, function(categories, status) {
+            $("#data").html(categories);
+        });
+    }
+
+    function closeModal() {
+
+        $('#modal-category').modal('hide');
+    }
+
+    function create() {
+        $.get("{{ url('dashboard/categories/create') }}", {}, function(data, status) {
+            $("#modal-label").html('Add Category');
+            $("#modal-body").html(data);
+            $("#modal-category").modal('show');
+        });
+    }
+
+    function store() {
+        $('#form-category-create').submit(function(e) {
+            e.preventDefault();
+            let form = $(this);
+            $.ajax({
+                url: '/dashboard/categories',
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    if (response.errors) {
+                        console.log(response.errors);
+                        $('.alert-danger').removeClass('d-none');
+                        $('.alert-danger').html(response.errors);
+                    } else {
+                        $('.alert-success').html(response.success).delay(1500);
+                        $('#btn-reset').click();
+                        $('#modal-category').modal('hide');
+                        data();
+                    }
+                }
+            });
+        });
+    }
+
+
+    function edit(id) {
+        $.get("{{ url('dashboard/categories') }}/" + id + "/edit", {}, function(data, status) {
+            $("#modal-label").html('Edit Category');
+            $("#modal-body").html(data);
+            $("#modal-category").modal('show');
+        });
+    }
+
+    function update(id) {
+        $('#form-category-edit').submit(function(e) {
+            e.preventDefault();
+            let form = $(this);
+            $.ajax({
+                url: '/dashboard/categories/' + id,
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    closeModal();
+                    data();
+                }
+            });
+        });
+    }
+
+    function remove(id) {
+        $.get("{{ url('dashboard/categories') }}/" + id + "/remove", {}, function(data, status) {
+            $("#modal-label").html('Delete Category');
+            $("#modal-body").html(data);
+            $("#modal-category").modal('show');
+        });
+    }
+
+    function destroy(id) {
+        $('#form-category-delete').submit(function(e) {
+            e.preventDefault();
+            let form = $(this);
+            $.ajax({
+                url: '/dashboard/categories/' + id,
+                method: 'POST',
+                data: form.serialize(),
+                success: function(response) {
+                    closeModal();
+                    data();
+                }
+            });
+        });
+    }
+</script>
 @endsection

@@ -11,6 +11,8 @@ class Order extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class, 'user_id');
@@ -18,6 +20,16 @@ class Order extends Model
 
     public function tickets(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function items(): HasMany
+    {
+        return $this->hasMany(Item::class, 'order_id');
+    }
+
+    public function cashier(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

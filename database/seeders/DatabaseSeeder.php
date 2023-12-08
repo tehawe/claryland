@@ -3,6 +3,10 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Category;
+use App\Models\Package;
+use App\Models\Product;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +25,8 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        User::factory()->create([
+        // User Default First
+        User::create([
             'name' => 'ClaryLand',
             'email' => 'claryland@example.com',
             'username' => 'claryland',
@@ -29,6 +34,41 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('090906'), // Default "090906"
             'access_type' => 1,
             'active' => 1,
+        ]);
+
+        // Category Default First
+        Category::create([
+            'name' => 'Tiket',
+            'description' => 'Tiket Bermain dan Pendamping / Tambahan'
+        ]);
+
+        // Product Default
+        Product::create([
+            'name' => 'Ticket Bermain',
+            'price' => 100000,
+            'category_id' => 1,
+        ]);
+        Product::create([
+            'name' => 'Ticket Pendamping',
+            'price' => 0,
+            'category_id' => 1,
+        ]);
+        Product::create([
+            'name' => 'Ticket Pendamping (Tambahan)',
+            'price' => 20000,
+            'category_id' => 1,
+        ]);
+
+        // Package Default
+        Package::create([
+            'name' => 'Regular or Weekdays',
+            'price' => 100000,
+            'Description' => 'Harga tiket berlaku untuk Senin s/d Jumat selain hari libur nasional',
+        ]);
+        Package::create([
+            'name' => 'Weekend and Holiday',
+            'price' => 120000,
+            'Description' => 'Harga tiket berlaku untuk sabtu s/d minggu dan hari libur nasional',
         ]);
     }
 }

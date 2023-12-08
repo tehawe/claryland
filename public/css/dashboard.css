@@ -4,8 +4,6 @@
   height: 1rem;
 }
 
-
-
 /*
  * Sidebar
  */
@@ -22,8 +20,8 @@
 }
 
 .sidebar .nav-link {
-  font-size: .875rem;
-  font-weight: 500;
+  font-size: .85rem;
+  font-weight: 400;
 }
 
 .sidebar .nav-link.active {

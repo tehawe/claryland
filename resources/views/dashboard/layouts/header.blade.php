@@ -1,4 +1,4 @@
-<header class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow" data-bs-theme="dark">
+<header class="navbar sticky-top bg-info flex-md-nowrap p-0 shadow" data-bs-theme="dark">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">
         <img src="http://127.0.0.1:8000/img/claryland-text.png" alt="ClaryLand" height="50" />
     </a>
@@ -6,15 +6,13 @@
         <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" ata-bs-display="static" aria-expanded="false">
             <i class="myicon bi-person-circle"></i><span>{{ Auth::user()->name }}</span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-sm-end">
-            <li><a class="dropdown-item" href="/dashboard/users/{{ Auth::user()->username }}"><i class="myicon bi-gear"></i>Setting</a></li>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{{ route('users.show',Auth::user()->username) }}"><i class="myicon bi-gear"></i>Setting</a></li>
             <li>
-                <a class="dropdown-item" href="#">
-                    <form action="/logout" method="post">
-                        @csrf
-                        <button type="submit" class="bg-dark border-0"><i class="myicon bi-box-arrow-right"></i>Logout</button>
-                    </form>
-                </a>
+                <form action="/logout" method="post">
+                    @csrf
+                    <button type="submit" id="btn-logout" class="dropdown-item"><i class="myicon bi-box-arrow-right"></i>Logout</button>
+                </form>
             </li>
         </ul>
     </div>

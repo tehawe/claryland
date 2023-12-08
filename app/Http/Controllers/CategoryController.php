@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -15,6 +17,12 @@ class CategoryController extends Controller
     {
         return view('dashboard.categories.index', [
             'title' => 'Category',
+        ]);
+    }
+
+    public function data()
+    {
+        return view('dashboard.categories.data', [
             'categories' => Category::withCount('products')->orderBy('name', 'desc')->get(),
         ]);
     }
@@ -34,13 +42,31 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $category = $request->validate([
-            'name' => ['required', 'max:255', 'unique:categories'],
-        ]);
-
-        Category::create($category);
-        $request->session()->flash('success', 'Add category success.');
-        return redirect('/dashboard/categories');
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:categories',
+            ],
+            [
+                'name.required' => 'Name can not be empty',
+                'name.max' => 'Name max is 255 characters',
+                'name.unique' => 'Name is already taken'
+            ]
+        );
+        if ($validation->fails()) {
+            return response()->json([
+                'errors' => $validation->errors(),
+            ]);
+        } else {
+            $category = [
+                'name' => $request->name,
+                'description' => $request->description,
+            ];
+            Category::create($category);
+            return response()->json([
+                'success' => 'Add new category success'
+            ]);
+        }
     }
 
     /**
@@ -51,6 +77,7 @@ class CategoryController extends Controller
         return view('dashboard.categories.show', [
             'title' => 'Category',
             'category' => $category,
+            'name' => $category->name,
             'products' => Product::withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->where('category_id', $category->id)->get(),
         ]);
     }
@@ -62,7 +89,7 @@ class CategoryController extends Controller
     {
         return view('dashboard.categories.edit', [
             'title' => 'Category',
-            'categories' => $category,
+            'category' => $category,
         ]);
     }
 
@@ -77,17 +104,23 @@ class CategoryController extends Controller
         }
 
         $dataNew = $request->validate($rules);
-
         Category::where('id', $category->id)->update($dataNew);
-
-        return redirect('/dashboard/categories/' . $request->id)->with('success', 'Category has been updated');
     }
 
     /**
      * Remove the specified resource from storage.
      */
+    public function remove(Category $category)
+    {
+        return view('dashboard.categories.remove', [
+            'title' => 'Category',
+            'category' => $category,
+        ]);
+    }
+
     public function destroy(Category $category)
     {
-        //
+        $category = Category::findOrFail($category->id);
+        $category->delete();
     }
 }

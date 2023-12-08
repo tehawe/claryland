@@ -1,13 +1,53 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,200;0,400;0,600;1,300;1,500;1,700&display=swap');
+
 body{
     margin: 0;
     padding: 0;
+    font-family: 'Roboto', sans-serif;
 }
 
-
-#login-page  {
+#login-page{
    background-color: darkorchid;
 }
 
 .myicon{
     margin-right: 0.5rem;
+}
+
+#navbar.show{
+    background-color: none;
+    text-align: center;
+}
+
+#receipt-print {
+    display: none;
+}
+
+@media print{
+    * {
+        display: none;
+    }
+
+    #receipt-print {
+        display: block;
+    }
+}
+
+a.nav-link {
+    color: #303030;
+    display: block;
+    padding: 0.25rem 0.65rem;
+    margin: 0.25rem 0.25rem auto 0.25rem;
+    background-color: #fda;
+}
+
+a.nav-link:hover {
+    color: #473c00;
+    background-color: #70c8ff;
+    padding: 0.25rem 0.85rem;
+}
+
+a.nav-link.active{
+    background-color: #70c8ff;
+    padding: 0.25rem 0.85rem;
 }
