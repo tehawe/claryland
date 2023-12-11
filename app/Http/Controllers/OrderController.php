@@ -197,6 +197,9 @@ class OrderController extends Controller
 
     public function receipt(Order $order)
     {
+        if ($order->status === 0) {
+            return redirect()->route('orders.payment', ['order' => $order->invoice]);
+        }
         return view('dashboard.transactions.orders.receipt', [
             'order' => Order::where('invoice', $order->invoice)->first(),
             'package' => Package::where('id', $order->package_id)->first('name'),

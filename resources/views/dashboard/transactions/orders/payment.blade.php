@@ -15,11 +15,26 @@
                             <div class="col"><i class="bi-phone d-block"></i>{{ $customer['contact'] }}</div>
                             <div class="col"><i class="bi-envelope-at d-block"></i>{{ $customer['email'] }}</div>
                         </div>
-                    </div>
-                    <ul class="list-group list-group-flush data-item"></ul>
-                    <div class="card-footer d-flex justify-content-between">
-                        <span class="col fs-4">Total</span>
-                        <span class="col fs-4 total-item text-end"></span>
+                        <table class="table table-bordered">
+                            <thead class="table-secondary">
+                                <tr class="text-center">
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Sub Total</th>
+                                </tr>
+                            </thead>
+                            <tbody class="data-item">
+                                {{-- data item --}}
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-secondary">
+                                    <th colspan="3" class="text-end">Total</th>
+                                    <th class="total-item text-end"></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                        <a href="{{ route('orders.create', ['order' => $invoice]) }}" role="button" class="btn btn-warning d-block"><i class="bi-arrow-left-square me-1"></i>Update Order</a>
                     </div>
                 </div>
             </div>
@@ -60,12 +75,29 @@
                     </div>
                     <div>
                         <button type="submit" class="btn btn-success w-100 my-3"><i class="bi-wallet2 me-1"></i>Confirm Payment</button>
-                        <a href="{{ route('orders.create', ['order' => $invoice]) }}" role="button" class="btn btn-warning d-block"><i class="bi-arrow-left-square me-1"></i>Update Order</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+    <div class="modal" id="modal-alert" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Error !</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body bg-warning">
+                    <p>Amount value cannot less than total value.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-warning" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 
     <script>
         const dataItems = document.querySelector('.data-item');
@@ -93,14 +125,12 @@
 
         // Display Item
         function dataItem(item) {
-            return `<li class="list-group-item">
-                    <div class="row d-flext justify-content-between">
-                        <span class="col">` + item.product_name + `</span>
-                        <span class="col text-end">` + currencyFormat(item.price) + `</span>
-                        <span class="col-sm-1 text-end">x ` + item.qty + `</span>
-                        <span class="col text-end">` + currencyFormat(item.qty * item.price) + `</span>
-                    </div>
-                </li>`;
+            return `<tr>
+                        <td>` + item.product_name + `</td>
+                        <td align="right">` + currencyFormat(item.price) + `</td>
+                        <td align="right">x ` + item.qty + `</td>
+                        <td align="right">` + currencyFormat(item.qty * item.price) + `</td>
+                </tr>`;
         }
 
         function currencyFormat(num) {
@@ -112,8 +142,10 @@
 
             $('#amount-input').hide();
             $('#amount').attr('disabled', true).attr('required', false);
+
             $('#card-input').hide();
             $('#card-number').attr('disabled', true).attr('required', false);
+
             $('#change-input').hide();
             $('#change').attr('disabled', true).attr('required', false);
 
@@ -135,7 +167,10 @@
 
                 $('#card-input').show();
                 $('#card_number').attr('disabled', false).attr('required', true);
+
                 $('#change').val('');
+                $('#change').attr('disabled', true).attr('required', false);
+                $('#change-input').hide();
             });
 
             $('#qris').click(function() {
@@ -148,6 +183,10 @@
 
                 $('#card-input').hide();
                 $('#card_number').attr('disabled', true).attr('required', false);
+
+                $('#change').val('');
+                $('#change').attr('disabled', true).attr('required', false);
+                $('#change-input').hide();
             });
 
             $('#amount').change(function() {
@@ -155,7 +194,7 @@
                 const total = $('#total').val();
                 const changeVal = amountVal - total;
                 if (changeVal < 0) {
-                    alert('Error: The payment amount cannot be less than the total');
+                    $('#modal-alert').modal('show');
                     $(this).val('');
                 } else {
                     $('#change').attr('disabled', true).attr('required', true);

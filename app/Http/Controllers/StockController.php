@@ -143,6 +143,6 @@ class StockController extends Controller
                 ]);
             }
         }
-        return redirect()->route('orders.receipt', ['order' => $order->invoice]);
+        return redirect()->route('orders.invoice', ['order' => $order->invoice]);
     }
 }

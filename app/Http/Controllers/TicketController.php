@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Http\Requests\StoreTicketRequest;
-use App\Http\Requests\UpdateTicketRequest;
+use App\Models\Order;
+use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
@@ -13,7 +13,9 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.transactions.tickets.index', [
+            'orders' => Order::where('status', 1)->get(),
+        ]);
     }
 
     /**
@@ -21,13 +23,12 @@ class TicketController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTicketRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -51,7 +52,7 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTicketRequest $request, Ticket $ticket)
+    public function update(Request $request, Ticket $ticket)
     {
         //
     }
