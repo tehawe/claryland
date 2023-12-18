@@ -70,7 +70,13 @@ class OrderController extends Controller
     public function create(Order $order)
     {
         $order = Order::where('invoice', $order->invoice)->first();
-        //dd($order->invoice);
+        $package = Package::where('id', $order->package_id)->firstOrFail('name');
+        if ($order->status === 1) {
+            return redirect()->route('orders.invoice', [
+                'order' => $order->invoice,
+                'package' => $package->name,
+            ]);
+        }
         return view('dashboard.transactions.orders.create', [
             'id' => $order->id,
             'invoice' => $order->invoice,
@@ -116,14 +122,34 @@ class OrderController extends Controller
         return redirect()->route('orders.create', ['order' => $order->invoice]);
     }
 
+    public function orderCustomCreate(Order $order)
+    {
+        return view('dashboard.transactions.orders.custom', [
+            'id' => $order->id,
+            'invoice' => $order->invoice,
+            'products' => Product::whereNotIn('id', ['1', '2', '3'])->get(),
+        ]);
+    }
+
+    public function orderCustomStore(Request $request)
+    {
+        $order = $request->all();
+        $order['user_id'] = Auth::user()->id;
+        $order = Order::create($order);
+
+        $order = Order::find($order->id);
+        return redirect()->route('orders.custom.create', ['order' => $order->invoice]);
+    }
+
     /**
      * Display the specified resource.
      */
     public function show(Order $order)
     {
-        return redirect()->route('orders.show', [
-            'order' => $order->invoice,
-            'packages' => Package::where('status', 1)->get(),
+        return view('dashboard.transactions.orders.show', [
+            'order' => Order::where('invoice', $order->invoice)->first(),
+            'package' => Package::where('id', $order->package_id)->first('name'),
+            'items' => Item::where('order_id', $order->id)->with('product')->get(),
         ]);
     }
 
@@ -164,7 +190,7 @@ class OrderController extends Controller
         // UPDATE ORDER
         $data = $request->all();
         $data['status'] = 1;
-        if ($request->payment_methode === 'cash') {
+        if ($request->payment_method === 'cash') {
             $data['amount'] = $request->amount;
         } else {
             $data['amount'] = $request->total;
@@ -181,9 +207,15 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $order)
+    public function delete(Order $order)
     {
-        //
+        $data = Order::where('invoice', $order->invoice)->firstOrFail();
+        $items = Item::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            $item->delete();
+        }
+        $data->delete();
+        return back()->with('delete', 'success');
     }
 
     public function Invoice(Order $order)

@@ -132,19 +132,34 @@ Route::middleware('admin')->group(function () {
 Route::middleware('auth')->group(function () {
     // Transaction
 
-    // Orders
+    // Orders Ticket
     Route::get('/transactions/orders', [OrderController::class, 'index'])->name('orders');
     Route::get('/transactions/orders/{order:invoice}/create', [OrderController::class, 'create'])->name('orders.create');
     Route::post('/transactions/orders/{order:invoice}/store', [OrderController::class, 'store'])->name('orders.store');
 
     Route::get('/transactions/orders/{order:invoice}/payment', [OrderController::class, 'payment'])->name('orders.payment');
     Route::patch('/transactions/orders/{order:invoice}/payment', [OrderController::class, 'paymentProcess'])->name('orders.payment.process');
-    Route::get('/transactions/orders/{order:invoice}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+    Route::get('/transactions/orders/{order:invoice}/show', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/transactions/orders/{order:invoice}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
+    Route::get('/transactions/orders/{order:invoice}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
+
+    Route::get('/transactions/orders/{order:invoice}/delete', [OrderController::class, 'delete'])->name('orders.delete');
+
+    // Orders Custome
+    Route::post('/transactions/orders/{order:invoice}/custom/store', [OrderController::class, 'orderCustomStore'])->name('orders.custom.store');
+    Route::get('/transactions/orders/{order:invoice}/custom/create', [OrderController::class, 'orderCustomCreate'])->name('orders.custom.create');
 
     Route::resource('/sales', SalesController::class);
     Route::resource('/settlement', SettlementController::class);
-    Route::resource('/ticket', TicketController::class);
+
+    // Ticket
+    Route::get('/transactions/orders/ticket', [TicketController::class, 'index'])->name('orders.ticket');
+    Route::get('/transactions/orders/{order:invoice}/ticket/store', [TicketController::class, 'store'])->name('orders.ticket.store');
+    Route::get('/transactions/orders/{order:invoice}/ticket/show', [TicketController::class, 'show'])->name('orders.ticket.show');
+    Route::get('/transactions/orders/{order:invoice}/ticket/create', [TicketController::class, 'create'])->name('orders.ticket.create');
+    Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/update', [TicketController::class, 'update'])->name('orders.ticket.update');
+    Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/getTicket', [TicketController::class, 'getTicket'])->name('orders.ticket.getTicket');
+    Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/checkIn', [TicketController::class, 'update'])->name('orders.ticket.checkin');
 });
 
 // ORDER ITEM

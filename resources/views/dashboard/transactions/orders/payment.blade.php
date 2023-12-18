@@ -10,11 +10,13 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">#{{ $invoice }}</h5>
-                        <div class="card-text row">
-                            <div class="col"><i class="bi-person-square d-block"></i>{{ $customer['name'] }}</div>
-                            <div class="col"><i class="bi-phone d-block"></i>{{ $customer['contact'] }}</div>
-                            <div class="col"><i class="bi-envelope-at d-block"></i>{{ $customer['email'] }}</div>
-                        </div>
+                        @if ($customer['name'] !== null)
+                            <div class="card-text row">
+                                <div class="col"><i class="bi-person-square d-block"></i>{{ $customer['name'] }}</div>
+                                <div class="col"><i class="bi-phone d-block"></i>{{ $customer['contact'] }}</div>
+                                <div class="col"><i class="bi-envelope-at d-block"></i>{{ $customer['email'] }}</div>
+                            </div>
+                        @endif
                         <table class="table table-bordered">
                             <thead class="table-secondary">
                                 <tr class="text-center">
@@ -46,7 +48,7 @@
                     @csrf
                     <div class="border border-success text-success rounded p-1 mb-3">
                         <span class="text-center d-block fs-5">Total (Rp)</span>
-                        <input type="number" class="total border-0 text-center text-success fs-3 w-100" name="total" id="total" style="border-none;">
+                        <input type="number" class="total border-0 text-center text-success fs-3 w-100 form-control-plaintext" name="total" id="total" style="border-none;" readonly>
                     </div>
                     <div class="form-check mb-3">
                         <label class="form-check-label" for="cash"><i class="bi-cash-coin me-1"></i>Cash</label>

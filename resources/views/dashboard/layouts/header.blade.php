@@ -3,11 +3,11 @@
         <img src="http://127.0.0.1:8000/img/claryland-text.png" alt="ClaryLand" height="50" />
     </a>
     <div class="text-white pe-5 dropdown">
-        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" ata-bs-display="static" aria-expanded="false">
+        <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
             <i class="myicon bi-person-circle"></i><span>{{ Auth::user()->name }}</span>
         </button>
         <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ route('users.show',Auth::user()->username) }}"><i class="myicon bi-gear"></i>Setting</a></li>
+            <li><a class="dropdown-item" href="{{ route('users.show', Auth::user()->username) }}"><i class="myicon bi-gear"></i>Setting</a></li>
             <li>
                 <form action="/logout" method="post">
                     @csrf

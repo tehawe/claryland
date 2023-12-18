@@ -5,14 +5,14 @@
         <input type="text" class="form-control  @error('name') is-invalid @enderror" id="name" name="name" placeholder="Category Name" value="{{ $category->name }}" required>
         <label for="name">Category Name</label>
         @error('name')
-        <div class="invalid-feedback mt-0 mb-3">{{ $message }}</div>
+            <div class="invalid-feedback mt-0 mb-3">{{ $message }}</div>
         @enderror
     </div>
     <div class="form-floating mb-3">
         <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description" placeholder="Descriptions" rows="3">{{ $category->description }}</textarea>
         <label for="description">Descriptions</label>
         @error('description')
-        <div class="invalid-feedback mt-0 mb-3">{{ $message }}</div>
+            <div class="invalid-feedback mt-0 mb-3">{{ $message }}</div>
         @enderror
     </div>
     <div class="my-2 d-flex justify-content-center">

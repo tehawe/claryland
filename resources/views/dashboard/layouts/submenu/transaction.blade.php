@@ -5,10 +5,10 @@
     </h6>
     <ul class="nav flex-column text-body">
         <li class="nav-item">
-            <a class="nav-link d-block rounded {{ Request::is('*orders*') ? 'active' : '' }}" href="{{ route('orders') }}"><i class="bi-cart me-2"></i>Order</a>
+            <a class="nav-link d-block rounded {{ Request::is('*orders') ? 'active' : '' }}" href="{{ route('orders') }}"><i class="bi-cart me-2"></i>Order</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-block rounded {{ Request::is('*ticket*') ? 'active' : '' }}" href="{{ route('ticket.index') }}"><i class="bi-ticket me-2"></i>Ticket</a>
+            <a class="nav-link d-block rounded {{ Request::is('*ticket*') ? 'active' : '' }}" href="{{ route('orders.ticket') }}"><i class="bi-ticket me-2"></i>Ticket</a>
         </li>
         <li class="nav-item">
             <a class="nav-link d-block rounded {{ Request::is('*sales*') ? 'active' : '' }}" href="{{ route('sales.index') }}"><i class="bi-graph-up me-2"></i>Sales</a>

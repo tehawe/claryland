@@ -4,16 +4,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-8">
-            <div class="d-flex justify-content-between border-bottom pb-3">
+            <div class="d-flex justify-content-between border-bottom pb-1 mb-1">
                 <h2>Categories</h2>
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary btn-sm my-2" onclick="create()">
-                    <i class="bi-plus-square"></i>
-                    Add Category
-                </button>
-            </div>
 
-            <div id="data" class="mt-3"></div>
+            </div>
+            <button type="button" class="btn btn-primary btn-sm my-2" onclick="create()">
+                <i class="bi-plus-square"></i>
+                Add Category
+            </button>
+            <div id="data"></div>
 
         </div>
     </div>

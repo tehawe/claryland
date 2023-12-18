@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('ticket_code', 8)->unique("ticket_code_unique");
             $table->string('name', 255)->nullable(false);
             $table->integer('age')->nullable(false);
-            $table->timestamp('check_in')->nullable();
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('item_id');
             $table->timestamps();

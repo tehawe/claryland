@@ -8,18 +8,23 @@ use App\Models\Product;
 use App\Http\Resources\ItemCollection;
 use App\Http\Resources\ItemResource;
 use App\Http\Resources\ProductNotInCollection;
+use App\Models\Package;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use League\CommonMark\Node\Query\OrExpr;
 
 class ItemController extends Controller
 {
     public function productNotIn(Order $order): JsonResponse
     {
-        $item = Item::where('order_id', $order->id)->get('product_id');
-        $product = Product::whereNotIn('id', $item)->get();
-
+        $item = Item::where('order_id', $order->id)->get('product_id');;
+        if ($order->package_id !== null) {
+            $product = Product::whereNotIn('id', $item)->get();
+        } else {
+            $product = Product::whereNotIn('id', $item)->whereNotIn('id', [1, 2, 3])->get();
+        }
         return (new ProductNotInCollection($product))->response()->setStatusCode(201);
     }
 
@@ -49,10 +54,19 @@ class ItemController extends Controller
     public function store(Request $request, Order $order): JsonResponse
     {
         $data = $request->all();
-        $product = $this->getProduct($request->product_id);
+
         $item = new Item($data);
+
+        $product = $this->getProduct($request->product_id);
         $item->product_id = $product->id;
-        $item->price = $product->price;
+
+        if ($product->id == 1) {
+            $package = Package::where('id', $order->package_id)->firstOrFail('price');
+            $item->price = $package->price;
+        } else {
+            $item->price = $product->price;
+        }
+
         $item->order_id = $order->id;
         $item->qty = 1;
         $item->save();
@@ -62,6 +76,14 @@ class ItemController extends Controller
 
     public function update(Request $request, Order $order, Item $item): ItemResource
     {
+        // cek product_id form request
+        if ($item->product_id == 2) {
+            $ticketBermain = Item::where('order_id', $order->id)->where('product_id', 1)->first('qty');
+            if ($request->qty > $ticketBermain->qty) {
+                return new ItemResource($item);
+            }
+        }
+
         $data = Item::where('id', $item->id)->first();
         $data->qty = $request->qty;
         $data->update();
@@ -70,6 +92,13 @@ class ItemController extends Controller
 
     public function plus(Request $request, Order $order, Item $item): ItemResource
     {
+        $ticketBermain = Item::where('order_id', $order->id)->where('product_id', 1)->first('qty');
+        if ($item->product_id == 2) {
+            if ($item->qty >= $ticketBermain->qty) {
+                return new ItemResource($item);
+            }
+        }
+
         $data = Item::where('id', $item->id)->first();
         $data->qty = $data->qty + 1;
         $data->update();

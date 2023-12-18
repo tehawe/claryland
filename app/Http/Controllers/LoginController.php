@@ -10,9 +10,10 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('login', [
-            'title' => 'Login',
-        ]);
+        if (Auth::user()) {
+            return redirect()->intended('dashboard/home');
+        }
+        return view('login', ['title' => 'Login']);
     }
 
     /**

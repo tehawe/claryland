@@ -28,7 +28,7 @@
                                     <td>{{ 'Rp ' . number_format($sale->total) }}</td>
                                     <td>{{ $sale->payment_method }}</td>
                                     <td>{{ $sale->user->name }}</td>
-                                    <td><a href="#check">Check</a></td>
+                                    <td><a href="{{ route('orders.show', ['order' => $sale->invoice]) }}">Check</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

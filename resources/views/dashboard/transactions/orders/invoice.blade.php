@@ -1,20 +1,18 @@
-@extends('dashboard.layouts.main')
+    <!DOCTYPE html>
+    <html lang="en">
 
-@section('container')
-    <div class="container-fluid no-print">
-        <div class="row">
-        </div>
-        <div class="row">
-            <div class="col">
-                <div class="d-flex justify-content-between">
-                    <h2>Invoice</h2>
-                    <div>
-                        <button class="btn btn-success btn-sm" onclick="exportPDF()"><i class="bi-filetype-pdf me-1"></i>Export PDF</button>
-                        <button class="btn btn-success btn-sm" onclick="printReceipt()"><i class="bi-receipt-cutoff me-1"></i>Receipt</button>
-                    </div>
-                </div>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="ie=edge">
+            <title>Invoice #{{ $order->invoice }}</title>
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+        </head>
+
+        <body>
+            <div class="container-fluid">
                 <div class="row">
-                    <div class="col p-2 border rounded" id="order-invoice">
+                    <div class="col p-2 m-3" id="order-invoice">
                         <div class="row justify-content-between">
                             <div class="col-sm-5">
                                 <img src="/img/claryland-text.png" id="logo" class="w-100" style="margin: -1rem auto 1rem -1rem;" />
@@ -32,16 +30,14 @@
                         <hr />
                         <div class="" id="order-customer">
                             <h6>Invoice To:</h6>
-                            <ul>
-                                <li>{{ $order->customer_name }}</li>
-                                <li>{{ $order->customer_contact }}</li>
-                                <li>{{ $order->customer_email }}</li>
-                            </ul>
+                            <p>
+                                {{ $order->customer_name }}<br />
+                                {{ $order->customer_contact }}<br />
+                                {{ $order->customer_email }}
+                            </p>
                         </div>
                         <div class="" id="order-package">
-                            <ul>
-                                <li>{{ $package->name }}</li>
-                            </ul>
+                            <h5>{{ $package->name }}</h5>
                         </div>
                         <div id="order-item">
                             <table class="table table-bordered">
@@ -72,7 +68,7 @@
                                     </tr>
                                     <tr align="right">
                                         <th colspan="4">
-                                            <span class="d-block">Payment with {{ str($order->payment_method)->ucfirst() }}</span>
+                                            <span class="d-block">Payment with {{ str($order->payment_method)->upper() }}</span>
                                             <span class="d-block">{{ str($order->card_number)->mask('*', 4, -4) }}</span>
                                         </th>
                                         <th>{{ 'Rp ' . number_format($order->amount) }}</th>
@@ -87,27 +83,11 @@
                             </table>
                         </div>
                         <div class="footer">
-                            <h3>Thank You</h3>
+                            <h4>Thank You</h4>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <script>
-        function printReceipt() {
-            window.open('{{ route('orders.receipt', ['order' => $order->invoice]) }}', 'Order Receipt + {{ $order->invoice }}', "width=320,height=500");
-        }
+        </body>
 
-        function exportPDF() {
-            var orderInvoice = document.getElementById('order-invoice');
-            var opt = {
-                margin: 2,
-                filename: 'invoice#{{ $order->invoice }}.pdf'
-            };
-
-            // New Promise-based usage:
-            html2pdf().set(opt).from(orderInvoice).save();
-        }
-    </script>
-@endsection
+    </html>
