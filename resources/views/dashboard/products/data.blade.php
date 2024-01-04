@@ -10,7 +10,7 @@
     </thead>
     <tbody>
         @foreach ($products as $product)
-            <tr>
+            <tr class="{{ $product->stocks_sum_stock_in - $product->stocks_sum_stock_out < 1 ? 'table-danger' : '' }}">
                 <td>{{ $product->name }}</td>
                 <td class="text-end">Rp {{ number_format($product->price) }}</td>
                 <td class="text-end">{{ $product->category->name }}</td>

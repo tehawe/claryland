@@ -24,7 +24,7 @@
                             <div class="col-sm-4 align-content-center">
                                 <h2>Invoice</h2>
                                 <h5>{{ '#' . $order->invoice }}</h5>
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=invoice%3A+{{ $order->invoice }}%0Awebsite%3A+https%3A%2F%2Fclaryland.com%2Finvoice%2F{{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=125x125&amp;ecc=L" alt="qr code" id="qrcode" />
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=invoice%3A+{{ $order->invoice }}%0Awebsite%3A+https%3A%2F%2Fclaryland.com%2Finvoice%2F{{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=125x125&amp;ecc=L" alt="{{ $order->invoice }}" id="qrcode" />
                             </div>
                         </div>
                         <hr />
@@ -84,6 +84,7 @@
                         </div>
                         <div class="footer">
                             <h4>Thank You</h4>
+                            <p>{{ $order->user->name }}<br />Cashier</p>
                         </div>
                     </div>
                 </div>

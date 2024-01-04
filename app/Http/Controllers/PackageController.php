@@ -14,7 +14,7 @@ class PackageController extends Controller
     {
         return view('dashboard.packages.index', [
             'title' => 'Packages',
-            'packages' => Package::orderBy('name', 'asc')->get(),
+            'packages' => Package::orderBy('status', 'desc')->orderBy('name', 'asc')->get(),
         ]);
     }
 
@@ -33,7 +33,11 @@ class PackageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $package = new Package($data);
+        $package->save();
+
+        return redirect()->route('packages.index')->with('success', 'Add new pacakge success');
     }
 
     /**
@@ -49,15 +53,21 @@ class PackageController extends Controller
      */
     public function edit(Package $package)
     {
-        //
+        return view('dashboard.packages.edit', [
+            'package' => $package
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdatePackageRequest $request, Package $package)
+    public function update(Request $request, Package $package)
     {
-        //
+        $data = $request->all();
+        $package = Package::where('id', $package->id)->first();
+        $package->update($data);
+
+        return redirect()->route('packages.index')->with('success', 'Update pacakge success');
     }
 
     /**

@@ -6,12 +6,20 @@
         </div>
         <div class="row">
             <div class="col">
-                <div class="d-flex justify-content-between">
-                    <h2>Invoice</h2>
-                    <div>
-                        <a href="{{ route('orders.ticket.store', ['order' => $order->invoice]) }}" class="btn btn-outline-success btn-sm me-1"><i class="bi-ticket-detailed me-1"></i>Create Ticket</a>
-                        <button class="btn btn-outline-success btn-sm" onclick="exportPDF()"><i class="bi-filetype-pdf me-1"></i>Export PDF</button>
-                        <button class="btn btn-outline-success btn-sm" onclick="printReceipt()"><i class="bi-receipt-cutoff me-1"></i>Receipt</button>
+                <div class="row d-flex justify-content-between">
+                    <h2 class="col-md my-1">Invoice</h2>
+                    <div class="col-md d-flex my-1 mb-3 justify-content-center">
+                        @if ($order->package_id)
+                            <form action="{{ route('orders.ticket.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="invoice" id="invoice" value="{{ $order->invoice }}">
+                                <button type="submit" class="btn btn-outline-success btn-sm me-1"><i class="bi-ticket-detailed me-1"></i>Create Ticket</button>
+                            </form>
+                        @endif
+                        <div>
+                            <button class="btn btn-outline-success btn-sm" onclick="exportPDF()"><i class="bi-filetype-pdf me-1"></i>Export PDF</button>
+                            <button class="btn btn-outline-success btn-sm" onclick="printReceipt()"><i class="bi-receipt-cutoff me-1"></i>Receipt</button>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
@@ -42,7 +50,7 @@
                             </div>
                             <div class="col-sm" id="order-package">
                                 <h6>Package:</h6>
-                                <p class="ms-3">{{ $package->name }}</p>
+                                <p class="ms-3">{{ $package === null ? 'Custom Order' : $package->name }}</p>
                             </div>
                         </div>
 
@@ -90,7 +98,8 @@
                             </table>
                         </div>
                         <div class="footer">
-                            <h3>Thank You</h3>
+                            <h4>Thank You</h4>
+                            <p>{{ $order->user->name }}<br />Cashier</p>
                         </div>
                     </div>
                 </div>
@@ -99,11 +108,11 @@
     </div>
     <script>
         function printReceipt() {
-            window.open('{{ route('orders.receipt', ['order' => $order->invoice]) }}', 'Order Receipt + {{ $order->invoice }}', 'width=320,height=500');
+            window.open(`{{ route('orders.receipt', ['order' => $order->invoice]) }}`, `Order Receipt + {{ $order->invoice }}`, `width=320,height=500`);
         }
 
         function exportPDF() {
-            window.open('{{ route('orders.invoice', ['order' => $order->invoice]) }}', 'Order Invioce + {{ $order->invoice }}', 'width=1000,height=800');
+            window.open(`{{ route('orders.invoice', ['order' => $order->invoice]) }}`, `Order Invioce + {{ $order->invoice }}`, `width=1000,height=800`);
         }
     </script>
 @endsection

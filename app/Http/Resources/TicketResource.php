@@ -19,7 +19,7 @@ class TicketResource extends JsonResource
             'name' => $this->name,
             'age' => $this->age,
             'ticket_code' => $this->ticket_code,
-            'check_in' => $this->check_in,
+            'check_in' => $this->updated_at->diffForHumans(),
             'order_id' => $this->order_id,
             'product_id' => $this->product_id,
             'product_name' => $this->product->name,

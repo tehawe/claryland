@@ -14,13 +14,18 @@ class SalesController extends Controller
 
     public function index()
     {
-
-        $sales = Order::where('status', 1);
         $user = Auth::user();
-        if ($user->access_type === 0) {
+
+        $sales = Order::selectRaw('id, invoice, total, DATE(created_at) as created_date, created_at, payment_method')
+            ->where('status', 1);
+        if (!$user->access_type) {
             $sales = $sales->where('user_id', $user->id);
         }
-        $sales = $sales->withSum('items', 'qty')->withSum('items', 'price')->get();
+        $sales = $sales->orderBy('created_at', 'DESC')
+            ->get()
+            ->groupBy('created_date');
+
+
         return view('dashboard.sales.index', [
             'sales' => $sales
         ]);
@@ -45,9 +50,19 @@ class SalesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $date)
     {
-        //
+        $user = Auth::user();
+        $sales = Order::whereDate('created_at', $date)->withCount('items')->withSum('items', 'qty')->orderBy('invoice', 'ASC');
+        if (!$user->access_type) {
+            $sales = $sales->where('user_id', $user->id);
+        }
+        $sales = $sales->get();
+
+        return view('dashboard.sales.show', [
+            'date' => $date,
+            'sales' => $sales
+        ]);
     }
 
     /**

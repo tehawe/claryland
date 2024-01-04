@@ -13,13 +13,16 @@ return new class extends Migration
     {
         Schema::create('settlements', function (Blueprint $table) {
             $table->id();
+            $table->string('code', 12);
             $table->string('name')->nullable(false);
-            $table->bigInteger('cash_in')->nullable(false);
-            $table->bigInteger('cash_out')->nullable(false);
-            $table->boolean('status');
+            $table->string('payment_method')->nullable(false);
+            $table->bigInteger('cash_in')->nullable(false)->default(0);
+            $table->bigInteger('cash_out')->nullable()->default(NULL);
+            $table->text('cash_note')->nullable();
+            $table->boolean('status')->nullable();
             $table->text('reason')->nullable();
             $table->unsignedBigInteger('sales_id');
-            $table->unsignedBigInteger('checker_id');
+            $table->unsignedBigInteger('checker_id')->nullable();
             $table->timestamps();
 
             $table->foreign('sales_id')->on('users')->references('id');

@@ -36,7 +36,7 @@
                                 </tr>
                             </tfoot>
                         </table>
-                        <a href="{{ route('orders.create', ['order' => $invoice]) }}" role="button" class="btn btn-warning d-block"><i class="bi-arrow-left-square me-1"></i>Update Order</a>
+                        <a href="{{ !$package ? route('orders.custom.create', ['order' => $invoice]) : route('orders.create', ['order' => $invoice]) }}" role="button" class="btn btn-warning d-block"><i class="bi-arrow-left-square me-1"></i>Update Order</a>
                     </div>
                 </div>
             </div>

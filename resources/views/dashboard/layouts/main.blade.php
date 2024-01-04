@@ -97,17 +97,17 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
         <link href="https://cdn.datatables.net/1.13.7/css/dataTables.bootstrap5.min.css" rel="stylesheet">
         <!-- Custom styles for this template -->
-        <link href="http://127.0.0.1:8000/css/style.css" rel="stylesheet">
+        <link href="/css/style.css" rel="stylesheet">
 
 
         {{-- Javascrip --}}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="http://127.0.0.1:8000/js/claryland.js"></script>
+        <script src="/js/claryland.js"></script>
 
         <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
         <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap5.min.js"></script>
-        <script src="http://127.0.0.1:8000/js/html2pdf.js"></script>
+        <script src="/js/html2pdf.js"></script>
     </head>
 
     <body>

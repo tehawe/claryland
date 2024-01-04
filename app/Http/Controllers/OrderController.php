@@ -148,7 +148,7 @@ class OrderController extends Controller
     {
         return view('dashboard.transactions.orders.show', [
             'order' => Order::where('invoice', $order->invoice)->first(),
-            'package' => Package::where('id', $order->package_id)->first('name'),
+            'package' => Package::where('id', $order->package_id)->first(),
             'items' => Item::where('order_id', $order->id)->with('product')->get(),
         ]);
     }
@@ -218,7 +218,7 @@ class OrderController extends Controller
         return back()->with('delete', 'success');
     }
 
-    public function Invoice(Order $order)
+    public function invoice(Order $order)
     {
         return view('dashboard.transactions.orders.invoice', [
             'order' => Order::where('invoice', $order->invoice)->first(),

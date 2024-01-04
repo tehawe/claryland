@@ -1,5 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@400&family=Roboto:ital,wght@0,400;0,500;0,900;1,400;1,500;1,900&display=swap');
 
+:root {
+    --bs-blue: #0d6efd;
+    --bs-indigo: #6610f2;
+    --bs-purple: #ECBDFA;
+    --bs-pink: #d63384;
+    --bs-red: #dc3545;
+    --bs-orange: #fd7e14;
+    --bs-yellow: #ECEE81;
+    --bs-green: #198754;
+    --bs-teal: #20c997;
+    --bs-cyan: #0dcaf0;
+    --bs-white: #fff;
+    --bs-gray: #6c757d;
+    --bs-gray-dark: #343a40;
+    --bs-primary: #8ACDD7;
+    --bs-secondary: #F3EEEA;
+    --bs-success: #198754;
+    --bs-info: #0dcaf0;
+    --bs-warning: #FFD966;
+    --bs-danger: #FD8A8A;
+    --bs-light: #f8f9fa;
+    --bs-dark: #212529;
+    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  }
+
+.clary-primary{
+    background: var(--bs-primary);
+}
+.clary-secondary{
+    background: var(--bs-secondary);
+}
+.clary-info{
+    background: var(--bs-info);
+}
+.clary-warning{
+    background-color: var(--bs-warning);
+}
+.clary-danger{
+    background-color: var(--bs-danger);
+}
+
+
 body{
     margin: 0;
     padding: 0;
@@ -19,21 +63,21 @@ body{
 
 
 a.nav-link {
-    color: #303030;
+    color: var(--bs-white);
     display: block;
     padding: 0.25rem 0.65rem;
     margin: 0.25rem 0.25rem auto 0.25rem;
-    background-color: #fda;
+    background-color:var(--bs-danger);
 }
 
 a.nav-link:hover {
-    color: #473c00;
-    background-color: #70c8ff;
+    color: var(--bs-white);
+    background-color: var(--bs-info);
     padding: 0.25rem 0.85rem;
 }
 
 a.nav-link.active{
-    background-color: #70c8ff;
+    background-color: var(--bs-info);
     padding: 0.25rem 0.85rem;
 }
 

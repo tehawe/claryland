@@ -1,6 +1,6 @@
 <header class="navbar sticky-top bg-info flex-md-nowrap p-0 shadow" data-bs-theme="dark">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white" href="#">
-        <img src="http://127.0.0.1:8000/img/claryland-text.png" alt="ClaryLand" height="50" />
+        <img src="/img/claryland-text.png" alt="ClaryLand" height="50" />
     </a>
     <div class="text-white pe-5 dropdown">
         <button class="btn btn-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">

@@ -7,28 +7,33 @@
             <div class="col">
                 <h1 class="border-bottom border-dark">Sales</h1>
                 @if ($sales->count() >= 1)
-                    <table class="table table-sm">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Invoice</th>
-                                <th>Items</th>
-                                <th>Totals</th>
-                                <th>Payment Method</th>
-                                <th>Cashier</th>
-                                <th></th>
+                    <table class="table table-sm table-hover table-bordered">
+                        <thead class="table-success">
+                            <tr valign="middle" align="center">
+                                <th valign="middle" rowspan="2">No</th>
+                                <th rowspan="2">Dates</th>
+                                <th rowspan="2">Order Count</th>
+                                <th colspan="3">Payment</th>
+                                <th rowspan="2">Total</th>
+                                <th rowspan="2"></th>
+                            </tr>
+                            <tr align="center">
+                                <th>Cash</th>
+                                <th>Debit/Credit</th>
+                                <th>QRIS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($sales as $sale)
-                                <tr>
+                            @foreach ($sales as $saleDate => $items)
+                                <tr align="center">
                                     <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $sale->invoice }}</td>
-                                    <td>{{ $sale->items_sum_qty }}</td>
-                                    <td>{{ 'Rp ' . number_format($sale->total) }}</td>
-                                    <td>{{ $sale->payment_method }}</td>
-                                    <td>{{ $sale->user->name }}</td>
-                                    <td><a href="{{ route('orders.show', ['order' => $sale->invoice]) }}">Check</a></td>
+                                    <td>{{ date_format(new DATETIME($saleDate), 'd/m/Y') }}</td>
+                                    <td align="right">{{ $items->count() }}</td>
+                                    <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $saleDate)->where('payment_method', 'cash')->sum('total')) }}</td>
+                                    <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $saleDate)->where('payment_method', 'card')->sum('total')) }}</td>
+                                    <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $saleDate)->where('payment_method', 'qris')->sum('total')) }}</td>
+                                    <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $saleDate)->sum('total')) }}</td>
+                                    <td><a href="{{ route('sales.show', ['date' => $saleDate]) }}" class="btn btn-info btn-sm"><i class="bi-box-arrow-in-right me-1"></i>Detail</a></td>
                                 </tr>
                             @endforeach
                         </tbody>

@@ -105,7 +105,7 @@
 
         // List Select Product
         function getListItem(id) {
-            fetch('http://127.0.0.1:8000/orders/' + id + '/product')
+            fetch('/orders/' + id + '/product')
                 .then(response => response.json())
                 .then(response => {
                     // Get List Items

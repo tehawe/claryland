@@ -75,14 +75,15 @@
     }
 
     #receipt-print #footer #customer {
-        float: left;
-        margin: auto 1rem auto auto;
-        text-align: left;
+        display: block;
+        text-align: center;
+        font-size: 0.8rem;
     }
 
     #receipt-print #footer #qrcode {
-        float: left;
-        margin: auto 0.5rem auto 0.5rem;
+        display: block;
+
+        margin: 0.5rem auto;
     }
 
     #receipt-print #footer #note {
@@ -179,7 +180,7 @@
     </div>
     <hr class="line">
     <div id="footer">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=invoice%3A+{{ $order->invoice }}%0Awebsite%3A+https%3A%2F%2Fclaryland.com%2Finvoice%2F{{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=85x85&amp;ecc=L" alt="qr code" id="qrcode" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data={{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=85x85&amp;ecc=L" alt="{{ $order->invoice }}" id="qrcode" />
         <div id="customer">
             {{ $order->customer_name }}<br />{{ $order->customer_contact }}<br />{{ $order->customer_email }}
         </div>

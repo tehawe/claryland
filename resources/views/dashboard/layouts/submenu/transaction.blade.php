@@ -14,7 +14,7 @@
             <a class="nav-link d-block rounded {{ Request::is('*sales*') ? 'active' : '' }}" href="{{ route('sales.index') }}"><i class="bi-graph-up me-2"></i>Sales</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link d-block rounded {{ Request::is('*settlement*') ? 'active' : '' }}" href="{{ route('settlement.index') }}"><i class="bi-journal-arrow-up me-2"></i>Settlement</a>
+            <a class="nav-link d-block rounded {{ Request::is('*settlements*') ? 'active' : '' }}" href="{{ route('settlements') }}"><i class="bi-journal-arrow-up me-2"></i>Settlement</a>
         </li>
     </ul>
 </section>

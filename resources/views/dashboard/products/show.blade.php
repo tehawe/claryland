@@ -70,18 +70,20 @@
 
     <script>
         $(document).ready(function() {
+            const productId = {{ $product->id }};
+
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
                 }
             });
 
-            $.get('/dashboard/products/' + {{ $product->id }} + '/stocks/data', {}, function(data, status) {
+            $.get('/dashboard/products/' + productId + '/stocks/data', {}, function(data, status) {
                 $("#data-stock").html(data);
             });
 
             $('#btn-stock-in').on('click', function() {
-                $.get('/dashboard/products/' + {{ $product->id }} + '/stocks/in', {}, function(data, status) {
+                $.get('/dashboard/products/' + productId + '/stocks/in', {}, function(data, status) {
                     $('#modal-title').html('Stock In');
                     $('#modal-body').html(data);
                     $('#modal-stock').modal('show');
@@ -89,7 +91,7 @@
             });
 
             $('#btn-stock-out').on('click', function() {
-                $.get('/dashboard/products/' + {{ $product->id }} + '/stocks/out', {}, function(data, status) {
+                $.get('/dashboard/products/' + productId + '/stocks/out', {}, function(data, status) {
                     $('#modal-title').html('Stock Out');
                     $('#modal-body').html(data);
                     $('#modal-stock').modal('show');
@@ -99,7 +101,7 @@
         });
 
         function edit(stockId) {
-            $.get('/dashboard/products/' + {{ $product->id }} + '/stocks/' + stockId + '/edit', {}, function(data, status) {
+            $.get('/dashboard/products/' + productId + '/stocks/' + stockId + '/edit', {}, function(data, status) {
                 $('#modal-title').html('Edit Stock');
                 $('#modal-body').html(data);
                 $('#modal-stock').modal('show');
@@ -107,7 +109,7 @@
         }
 
         function remove(stockId) {
-            $.get('/dashboard/products/' + {{ $product->id }} + '/stocks/' + stockId + '/remove', {}, function(data, status) {
+            $.get('/dashboard/products/' + productId + '/stocks/' + stockId + '/remove', {}, function(data, status) {
                 $('#modal-title').html('Remove Stock Confirmation');
                 $('#modal-body').html(data);
                 $('#modal-stock').modal('show');

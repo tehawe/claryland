@@ -10,7 +10,7 @@
                     <input type="hidden" name="invoice" id="invoice" value="{{ $invoice }}">
                     <div class="mb-3 form-floating">
                         <div class="col mb-3 form-floating">
-                            <select name="package_id" id="package_id" class="form-select">
+                            <select name="package_id" id="package_id" class="form-select" required>
                                 <option value="">- Select Package -</option>
                                 @foreach ($packages as $package)
                                     <option value="{{ $package->id }}">{{ $package->name }} => (Rp {{ number_format($package->price) }})</option>

@@ -12,6 +12,9 @@
     </thead>
     <tbody class="data-ticket">
         @foreach ($tickets as $ticketProduct)
+            <tr>
+                <td colspan="7" class="table-info"></td>
+            </tr>
             @foreach ($ticketProduct as $ticket)
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -23,9 +26,6 @@
                     <td><button type="button" data-id="{{ $ticket->id }}" class="btn-update btn btn-success btn-sm"><i class="bi-box-arrow-in-up-right me-1"></i>Check-In</button></td>
                 </tr>
             @endforeach
-            <tr>
-                <td colspan="7" align="center" class="table-info"></td>
-            </tr>
         @endforeach
     </tbody>
 </table>
@@ -42,21 +42,21 @@
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text"><i class="bi-pencil"></i></span>
                         <div class="form-floating">
-                            <input type="text" name="name" id="name" class="form-control" />
+                            <input type="text" name="name" id="name" class="form-control" required />
                             <label for="name">Name</label>
                         </div>
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text"><i class="bi-123"></i></span>
                         <div class="form-floating">
-                            <input type="number" name="age" id="age" class="form-control" />
+                            <input type="number" name="age" id="age" class="form-control" required />
                             <label for="name">Age</label>
                         </div>
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text"><i class="bi-qr-code-scan"></i></span>
                         <div class="form-floating">
-                            <input type="text" name="ticket_code" id="ticket_code" class="form-control" />
+                            <input type="text" name="ticket_code" id="ticket_code" class="form-control" required />
                             <label for="name">Ticket Code</label>
                         </div>
                     </div>
@@ -75,10 +75,14 @@
 
             $.get('/transactions/orders/{{ $invoice }}/ticket/' + ticketId + '/getTicket', function(response, status) {
                 let ticket = response.data;
+                const name = ticket.name ? ticket.name : '';
+                const age = ticket.age ? ticket.age : '';
+                const ticketCode = ticket.ticket_code ? ticket.ticket_code : '';
+
                 $('.modal-title').html('Update ' + ticket.product_name);
-                $('#name').val(ticket.name);
-                $('#age').val(ticket.age);
-                $('#ticket_code').val(ticket.ticket_code);
+                $('#name').val(name);
+                $('#age').val(age);
+                $('#ticket_code').val(ticketCode);
                 $('.modal').modal('show');
 
                 $('#formCheckIn').submit(function(e) {

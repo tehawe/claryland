@@ -71,6 +71,8 @@ Route::get('/FAQs', function () {
     ]);
 });
 
+
+
 // LOGIN //
 
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -126,7 +128,9 @@ Route::middleware('admin')->group(function () {
     Route::resource('/dashboard/packages', PackageController::class);
 
     // Reports
-    Route::get('/dashboard/reportss', [ReportController::class, 'index'])->name('reports');
+    Route::get('/dashboard/reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('/dashboard/reports/{date}/daily/transaction', [ReportController::class, 'dailyTransaction'])->name('reports.daily.transactions');
+    Route::get('/dashboard/reports/{date}/daily/stock', [ReportController::class, 'dailyStock'])->name('reports.daily.stock');
 });
 
 Route::middleware('auth')->group(function () {
@@ -149,17 +153,28 @@ Route::middleware('auth')->group(function () {
     Route::post('/transactions/orders/{order:invoice}/custom/store', [OrderController::class, 'orderCustomStore'])->name('orders.custom.store');
     Route::get('/transactions/orders/{order:invoice}/custom/create', [OrderController::class, 'orderCustomCreate'])->name('orders.custom.create');
 
-    Route::resource('/sales', SalesController::class);
-    Route::resource('/settlement', SettlementController::class);
+    //Sales
+    Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+    Route::get('/sales/{date}/show', [SalesController::class, 'show'])->name('sales.show');
+
+    //Settlemtnt
+    Route::get('/settlements/getNewCode', [SettlementController::class, 'getNewCode'])->name('settlements.getNewCode');
+    Route::get('/settlements', [SettlementController::class, 'index'])->name('settlements');
+    Route::get('/settlements/store', [SettlementController::class, 'store'])->name('settlements.store');
+    Route::get('/settlements/{settlement:code}/show', [SettlementController::class, 'show'])->name('settlements.show');
+    Route::get('/settlements/current', [SettlementController::class, 'current'])->name('settlements.current');
+    Route::get('/settlements/{settlement:code}/edit', [SettlementController::class, 'edit'])->name('settlements.edit');
+    Route::patch('/settlements/{settlement:code}/update', [SettlementController::class, 'update'])->name('settlements.update');
 
     // Ticket
     Route::get('/transactions/orders/ticket', [TicketController::class, 'index'])->name('orders.ticket');
-    Route::get('/transactions/orders/{order:invoice}/ticket/store', [TicketController::class, 'store'])->name('orders.ticket.store');
+    Route::post('/transactions/orders/ticket', [TicketController::class, 'store'])->name('orders.ticket.store');
     Route::get('/transactions/orders/{order:invoice}/ticket/show', [TicketController::class, 'show'])->name('orders.ticket.show');
     Route::get('/transactions/orders/{order:invoice}/ticket/create', [TicketController::class, 'create'])->name('orders.ticket.create');
     Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/update', [TicketController::class, 'update'])->name('orders.ticket.update');
     Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/getTicket', [TicketController::class, 'getTicket'])->name('orders.ticket.getTicket');
     Route::get('/transactions/orders/{order:invoice}/ticket/{ticket:id}/checkIn', [TicketController::class, 'update'])->name('orders.ticket.checkin');
+    Route::get('/transactions/orders/ticket/validation', [TicketController::class, 'validation'])->name('orders.ticket.validation');
 });
 
 // ORDER ITEM
