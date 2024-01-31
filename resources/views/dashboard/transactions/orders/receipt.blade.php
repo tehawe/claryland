@@ -4,7 +4,7 @@
     #receipt-print {
         text-align: center;
         max-width: 300px;
-        margin: 0.1rem auto;
+        margin: auto auto 3px 1px;
     }
 
     #receipt-print>* {
@@ -21,7 +21,7 @@
     }
 
     #receipt-print #header #location {
-        font-size: 1rem;
+        font-size: 0.75rem;
         font-weight: bold;
     }
 
@@ -37,20 +37,21 @@
         font-size: 0.85rem;
     }
 
-    #receipt-print #body #invoice {
-        clear: both;
-        font-weight: bold;
+    #receipt-print #body #info #invoice {
+        display: block;
+        text-align: center;
+        font-weight: bolder;
     }
 
     #receipt-print #body #info #datetime {
-        display: inline;
-        float: left;
-        text-align: left;
+        display: block;
+        text-align: center;
     }
 
     #receipt-print #body #info #cashier {
-        display: inline;
-        float: right;
+        display: block;
+        margin-top: 0.25rem;
+        text-align: left;
     }
 
     #receipt-print #body #item {
@@ -100,16 +101,15 @@
 <div id="receipt-print">
     <button class="btn-print" onclick="window.print()">Print</button>
     <div id="header">
-        <img src="/img/claryland-text.png" id="logo" />
-        <p id="location">Jatinangor Town Square<br />(JATOS)</p>
+        <img src="/img/claryland-text-bw.png" id="logo" />
+        <p id="location">Jatinangor Town Square<br />(JATOS) Lt. SF</p>
         <p id="address">Jl. Raya Jatinangor No.150, Cikeruh, Kec. Jatinangor, Kabupaten Sumedang, Jawa Barat 45363</p>
-        <p id="contact">www.claryland.com | playground@clarylan.com | 08123456789xx</p>
+        <p id="contact">www.clarylandplayground.com</p>
     </div>
     <div id="body">
-        <p id="invoice">Receipt - #{{ $order->invoice }}</p>
         <div id="info">
-            <span id="datetime">{{ 'Date: ' . date_format($order->updated_at, 'd/m/Y') }}<br />
-                {{ 'Time: ' . date_format($order->updated_at, 'H:i') }}</span>
+            <span id="invoice">Receipt - #{{ $order->invoice }}</span>
+            <span id="datetime">{{ date_format($order->updated_at, 'd/m/Y') . ' ' . date_format($order->updated_at, 'H:i') }}</span>
             <span id="cashier">{{ 'Cashier: ' . Auth::user()->name }}</span>
         </div>
         <hr class="line">
@@ -118,9 +118,9 @@
                 <thead>
                     <tr align="center" style="font: bolder;">
                         <th>Item</th>
-                        <th>Price (Rp)</th>
+                        <th>Price</th>
                         <th>Qty</th>
-                        <th>Sub Total (Rp)</th>
+                        <th>Sub Total</th>
                     </tr>
                     <tr>
                         <th colspan="4">

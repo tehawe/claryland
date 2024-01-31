@@ -70,7 +70,7 @@
 
     <script>
         $(document).ready(function() {
-            const productId = {{ $product->id }};
+            let productId = {{ $product->id }};
 
             $.ajaxSetup({
                 headers: {
@@ -100,16 +100,16 @@
 
         });
 
-        function edit(stockId) {
-            $.get('/dashboard/products/' + productId + '/stocks/' + stockId + '/edit', {}, function(data, status) {
+        function edit(stockId, product) {
+            $.get("/dashboard/products/" + product + "/stocks/" + stockId + "/edit", function(data, status) {
                 $('#modal-title').html('Edit Stock');
                 $('#modal-body').html(data);
                 $('#modal-stock').modal('show');
             });
         }
 
-        function remove(stockId) {
-            $.get('/dashboard/products/' + productId + '/stocks/' + stockId + '/remove', {}, function(data, status) {
+        function remove(stockId, product) {
+            $.get('/dashboard/products/' + product + '/stocks/' + stockId + '/remove', function(data, status) {
                 $('#modal-title').html('Remove Stock Confirmation');
                 $('#modal-body').html(data);
                 $('#modal-stock').modal('show');

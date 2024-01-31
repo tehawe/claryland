@@ -17,8 +17,8 @@
                 <td>{{ date_format($stock->created_at, 'd-M-Y') }}</td>
                 <td align="right">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-sm btn-warning" id="btn-edit" data-id="{{ $stock->id }}" onclick="edit({{ $stock->id }})"><i class="bi-pencil-square me-1"></i>Edit</button>
-                        <button class="btn btn-sm btn-danger" id="btn-delete" data-id="{{ $stock->id }}" onclick="remove({{ $stock->id }})"><i class="bi-trash me-1"></i>Delete</button>
+                        <button class="btn btn-sm btn-warning" id="btn-edit" data-id="{{ $stock->id }}" onclick="edit({{ $stock->id }},{{ $stock->product->id }})"><i class="bi-pencil-square me-1"></i>Edit</button>
+                        <button class="btn btn-sm btn-danger" id="btn-delete" data-id="{{ $stock->id }}" onclick="remove({{ $stock->id }}, {{ $stock->product->id }})"><i class="bi-trash me-1"></i>Delete</button>
                     </div>
                 </td>
             </tr>

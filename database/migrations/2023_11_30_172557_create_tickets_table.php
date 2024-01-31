@@ -13,15 +13,17 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
-            $table->string('ticket_code', 8)->unique("ticket_code_unique");
-            $table->string('name', 255)->nullable(false);
-            $table->integer('age')->nullable(false);
+            $table->string('ticket_code', 8)->unique("ticket_code_unique")->nullable()->default(NULL);
+            $table->string('name', 255)->nullable()->default(NULL);
+            $table->integer('age')->nullable()->default(NULL);
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('item_id');
+            $table->unsignedBigInteger('product_id');
             $table->timestamps();
 
             $table->foreign('order_id')->on('orders')->references('id');
             $table->foreign('item_id')->on('items')->references('id');
+            $table->foreign('product_id')->on('products')->references('id');
         });
     }
 

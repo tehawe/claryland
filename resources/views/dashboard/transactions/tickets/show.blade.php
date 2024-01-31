@@ -42,14 +42,14 @@
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text"><i class="bi-pencil"></i></span>
                         <div class="form-floating">
-                            <input type="text" name="name" id="name" class="form-control" required />
+                            <input type="text" name="name" id="name" class="form-control" />
                             <label for="name">Name</label>
                         </div>
                     </div>
                     <div class="input-group input-group-sm mb-3">
                         <span class="input-group-text"><i class="bi-123"></i></span>
                         <div class="form-floating">
-                            <input type="number" name="age" id="age" class="form-control" required />
+                            <input type="number" name="age" id="age" class="form-control" />
                             <label for="name">Age</label>
                         </div>
                     </div>

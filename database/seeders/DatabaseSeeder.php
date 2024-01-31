@@ -27,10 +27,10 @@ class DatabaseSeeder extends Seeder
 
         // User Default First
         User::create([
-            'name' => 'ClaryLand',
-            'email' => 'claryland@example.com',
+            'name' => 'ClaryLand Playground',
+            'email' => 'info@clarylandplayground.com',
             'username' => 'claryland',
-            'contact' => '081234567890',
+            'contact' => '081222014448',
             'password' => bcrypt('090906'), // Default "090906"
             'access_type' => 1,
             'active' => 1,
@@ -62,12 +62,12 @@ class DatabaseSeeder extends Seeder
         // Package Default
         Package::create([
             'name' => 'Regular or Weekdays',
-            'price' => 100000,
+            'price' => 50000,
             'Description' => 'Harga tiket berlaku untuk Senin s/d Jumat selain hari libur nasional',
         ]);
         Package::create([
             'name' => 'Weekend and Holiday',
-            'price' => 120000,
+            'price' => 60000,
             'Description' => 'Harga tiket berlaku untuk sabtu s/d minggu dan hari libur nasional',
         ]);
     }

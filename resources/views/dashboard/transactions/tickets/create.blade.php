@@ -4,13 +4,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <h1>Ticket Create<br />{{ $invoice }}</h1>
+                <h3>Ticket Create<br />{{ $invoice }}</h3>
                 <div id="show-data-ticket"></div>
+                <div class="text-center py-3">
+                    <a href="{{ route('orders.show', ['order' => $invoice]) }}" role="button" class="btn btn-sm btn-warning"><i class="bi-box-arrow-in-left me-1"></i>Back to Transactions</a>
+                </div>
             </div>
         </div>
     </div>
-
-
 
     <script>
         $(document).ready(function() {
