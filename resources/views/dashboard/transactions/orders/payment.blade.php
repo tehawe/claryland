@@ -54,14 +54,16 @@
                         <label class="form-check-label" for="cash"><i class="bi-cash-coin me-1"></i>Cash</label>
                         <input class="form-check-input" type="radio" name="payment_method" id="cash" value="cash" required>
                     </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="payment_method" id="card" value="card" required>
-                        <label class="form-check-label" for="card"><i class="bi-credit-card me-1"></i>Card (Debit / Credit)</label>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="radio" name="payment_method" id="qris" value="qris">
-                        <label class="form-check-label" for="qris"><i class="bi-qr-code me-1"></i>QRIS</label>
-                    </div>
+                    <!--
+                            <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="card" value="card" required>
+                                        <label class="form-check-label" for="card"><i class="bi-credit-card me-1"></i>Card (Debit / Credit)</label>
+                                    </div>
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="radio" name="payment_method" id="qris" value="qris">
+                                        <label class="form-check-label" for="qris"><i class="bi-qr-code me-1"></i>QRIS</label>
+                                    </div>
+                                -->
 
                     <div class="mb-3 form-floating" id="card-input">
                         <input type="text" class="form-control" id="card_number" name="card_number" placeholder="Card Number" maxlength="19" minlength="16">

@@ -179,7 +179,7 @@
             });
         });
 
-        // Plus Qty Item
+        // Min Qty Item
         $('.data-item').on('click', '.btn-min', function() {
             let btnMin = $(this).data('id');
             $.ajax({

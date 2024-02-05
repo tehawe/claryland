@@ -103,7 +103,7 @@
     <div id="header">
         <img src="/img/claryland-text-bw.png" id="logo" />
         <p id="location">Jatinangor Town Square<br />(JATOS) Lt. SF</p>
-        <p id="address">Jl. Raya Jatinangor No.150, Cikeruh, Kec. Jatinangor, Kabupaten Sumedang, Jawa Barat 45363</p>
+        <p id="address">Jl. Raya Jatinangor No.150</p>
         <p id="contact">www.clarylandplayground.com</p>
     </div>
     <div id="body">
@@ -130,12 +130,12 @@
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
-                        <tr valign="top">
-                            <td>{{ $item->product->name }}</td>
-                            <td align="right">{{ number_format($item->price) }}</td>
-                            <td align="right">{{ 'x' . $item->qty }}</td>
-                            <td align="right">{{ number_format($item->price * $item->qty) }}</td>
-                        </tr>
+                    <tr valign="top">
+                        <td>{{ $item->product->name }}</td>
+                        <td align="right">{{ number_format($item->price) }}</td>
+                        <td align="right">{{ 'x' . $item->qty }}</td>
+                        <td align="right">{{ number_format($item->price * $item->qty) }}</td>
+                    </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
@@ -152,27 +152,27 @@
                     <tr align="right">
                         <th colspan="2">Pay with
                             @switch($order->payment_method)
-                                @case('card')
-                                    {{ str()->ucfirst($order->payment_method) }}<br />
-                                    <span style="font-size: 0.75rem;">{{ str($order->card_number)->mask('*', 0, -4) }}</span>
-                                @break
+                            @case('card')
+                            {{ str()->ucfirst($order->payment_method) }}<br />
+                            <span style="font-size: 0.75rem;">{{ str($order->card_number)->mask('*', 0, -4) }}</span>
+                            @break
 
-                                @case('qris')
-                                    {{ str()->upper($order->payment_method) }}
-                                @break
+                            @case('qris')
+                            {{ str()->upper($order->payment_method) }}
+                            @break
 
-                                @default
-                                    {{ str()->ucfirst($order->payment_method) }}
+                            @default
+                            {{ str()->ucfirst($order->payment_method) }}
                             @endswitch
                         </th>
                         <th colspan="2">{{ 'Rp ' . number_format($order->amount) }}</th>
                     </tr>
                     @if ($order->payment_method === 'cash')
-                        <tr align="right">
-                            <th></th>
-                            <th>Change</th>
-                            <th colspan="2">{{ 'Rp ' . number_format($order->amount - $order->total) }}</th>
-                        </tr>
+                    <tr align="right">
+                        <th></th>
+                        <th>Change</th>
+                        <th colspan="2">{{ 'Rp ' . number_format($order->amount - $order->total) }}</th>
+                    </tr>
                     @endif
                 </tfoot>
             </table>

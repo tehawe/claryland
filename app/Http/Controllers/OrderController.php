@@ -9,6 +9,8 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Item;
 use App\Models\Product;
+use App\Models\Stock;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -127,7 +129,7 @@ class OrderController extends Controller
         return view('dashboard.transactions.orders.custom', [
             'id' => $order->id,
             'invoice' => $order->invoice,
-            'products' => Product::whereNotIn('id', ['1', '2', '3'])->get(),
+            'products' => Product::whereNotIn('id', [1, 2])->get(),
         ]);
     }
 
@@ -166,7 +168,15 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        $data = $request->all();
+        $data['status'] = 0;
+        $data['amount'] = NULL;
+        $data['user_id'] = Auth::user()->id;
+        $updateOrder = Order::findOrFail($order->id);
+        $updateOrder->fill($data);
+        $updateOrder->save();
+
+        return redirect()->route('orders.payment', ['order' => $order->invoice]);
     }
 
     public function payment(Request $request, Order $order)
@@ -207,7 +217,7 @@ class OrderController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Order $order)
+    public function cancel(Order $order)
     {
         $data = Order::where('invoice', $order->invoice)->firstOrFail();
         $items = Item::where('order_id', $order->id)->get();
@@ -216,6 +226,29 @@ class OrderController extends Controller
         }
         $data->delete();
         return back()->with('delete', 'success');
+    }
+
+    /**
+     * Delete miss transactions completed the specified resource from storage.
+     */
+    public function delete(Order $order)
+    {
+        $data = Order::where('invoice', $order->invoice)->firstOrFail();
+        $tickets = Ticket::where('order_id', $order->id)->get();
+        foreach ($tickets as $ticket) {
+            $ticket->delete();
+        }
+        $stocks = Stock::where('description', $order->invoice)->get();
+        foreach ($stocks as $stock) {
+            $stock->delete();
+        }
+        $items = Item::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            $item->delete();
+        }
+
+        $data->delete();
+        return redirect()->route('sales.show', ['date' => date_format($order->created_at, 'Y-m-d')])->with('delete', 'success');
     }
 
     public function invoice(Order $order)

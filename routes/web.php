@@ -129,6 +129,7 @@ Route::middleware('admin')->group(function () {
 
     // Reports
     Route::get('/dashboard/reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('/dashboard/reports/{date}/daily', [ReportController::class, 'daily'])->name('reports.daily');
     Route::get('/dashboard/reports/{date}/daily/transaction', [ReportController::class, 'dailyTransaction'])->name('reports.daily.transactions');
     Route::get('/dashboard/reports/{date}/daily/stock', [ReportController::class, 'dailyStock'])->name('reports.daily.stock');
 });
@@ -147,7 +148,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactions/orders/{order:invoice}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
     Route::get('/transactions/orders/{order:invoice}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 
+    Route::get('/transactions/orders/{order:invoice}/cancel', [OrderController::class, 'delete'])->name('orders.cancel');
     Route::get('/transactions/orders/{order:invoice}/delete', [OrderController::class, 'delete'])->name('orders.delete');
+
+    Route::get('/transactions/orders/{order:invoice}/update', [OrderController::class, 'update'])->name('orders.update');
 
     // Orders Custome
     Route::post('/transactions/orders/{order:invoice}/custom/store', [OrderController::class, 'orderCustomStore'])->name('orders.custom.store');

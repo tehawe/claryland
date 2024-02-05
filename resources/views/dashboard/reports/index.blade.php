@@ -36,20 +36,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($reports as $report => $items)
+                                @foreach ($reports as $reportDate => $items)
                                     <tr align="center" valign="middle">
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ date_format(new DATETIME($report), 'd/m/Y') }}</td>
+                                        <td>{{ date_format(new DATETIME($reportDate), 'd/m/Y') }}</td>
                                         <td align="center">{{ $items->where('package_id', '<>', null)->count() }}</td>
                                         <td>{{ $items->where('package_id', null)->count() }}</td>
                                         <td>{{ $items->count() }}</td>
                                         <td>{{ $items->sum('items_count') }}</td>
                                         <td>{{ $items->sum('items_sum_qty') }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $report)->where('payment_method', 'cash')->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $report)->where('payment_method', 'card')->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $report)->where('payment_method', 'qris')->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $report)->sum('total')) }}</td>
-                                        <td><a href="#" class="btn btn-sm btn-primary">Check</a></td>
+                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'cash')->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'card')->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'qris')->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $reportDate)->sum('total')) }}</td>
+                                        <td><a href="{{ route('reports.daily', ['date' => $reportDate]) }}" class="btn btn-sm btn-primary">Check</a></td>
                                     </tr>
                                 @endforeach
                             </tbody>

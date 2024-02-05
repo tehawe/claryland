@@ -23,7 +23,7 @@ class ItemController extends Controller
         if ($order->package_id !== null) {
             $product = Product::whereNotIn('id', $item)->get();
         } else {
-            $product = Product::whereNotIn('id', $item)->whereNotIn('id', [1, 2, 3])->get();
+            $product = Product::whereNotIn('id', $item)->whereNotIn('id', [1, 2])->get();
         }
         return (new ProductNotInCollection($product))->response()->setStatusCode(201);
     }

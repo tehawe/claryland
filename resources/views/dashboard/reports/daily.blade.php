@@ -5,32 +5,50 @@
         <div class="row">
             <div class="col-md">
                 <h3>Daily Report at {{ date_format(new DATETIME($date), 'd-M-Y') }}</h3>
-                <table class="table table-sm table-hover data-table">
-                    <thead class="table-success">
-                        <tr>
-                            <th>No</th>
-                            <th>Invoice</th>
-                            <th>Items</th>
-                            <th>Total</th>
-                            <th>Payment Method</th>
-                            <th>Cashier</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($reports as $report)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $report->invoice }}</td>
-                                <td>{{ $report->items_sum_qty }}</td>
-                                <td align="right">{{ 'Rp ' . number_format($report->total) }}</td>
-                                <td>{{ Str::upper($report->payment_method) }}</td>
-                                <td>{{ $report->user->name }}</td>
-                                <td><a href="" class="btn btn-info btn-sm"><i class="bi-arrow-left-in me-1"></i>Check</a></td>
-                            </tr>
+                <div class="row mb-1">
+                    <div class="col-md border me-1">
+                        <h5>Visitor</h5>
+                        @foreach ($visitors as $visitor => $data)
+                            {{ $visitor . ' = ' . $data->sum('qty') }}<br />
                         @endforeach
-                    </tbody>
-                </table>
+                    </div>
+                    <div class="col-md border me-1">
+                        <h5>Transactions</h5>
+                    </div>
+                </div>
+                <div class="row border">
+                    <div class="col-md me-1">
+                        <h5>Sales</h5>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Product</th>
+                                    <th>Price</th>
+                                    <th>Qty</th>
+                                    <th>Sub Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($sales as $sale)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $sale->products->name }}</td>
+                                        <td>{{ $sale->price }}</td>
+                                        <td>{{ $sale->sum('qty') }}</td>
+                                        <td>{{ $sale->sum('qty') * $sale->price }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="4" align="right">Grand Total</th>
+                                    <th>1</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

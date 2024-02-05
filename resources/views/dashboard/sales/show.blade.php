@@ -14,6 +14,7 @@
                                 <th colspan="2">Product/Items</th>
                                 <th rowspan="2">Totals</th>
                                 <th rowspan="2">Payment Method</th>
+                                <th rowspan="2">Cashier</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr align="center">
@@ -30,6 +31,7 @@
                                     <td>{{ $sale->items_sum_qty }}</td>
                                     <td align="right">{{ 'Rp ' . number_format($sale->total) }}</td>
                                     <td>{{ Str::upper($sale->payment_method) }}</td>
+                                    <td>{{ $sale->user->name }}</td>
                                     <td><a class="btn btn-info btn-sm" href="{{ route('orders.show', ['order' => $sale->invoice]) }}"><i class="bi-box-arrow-in-up-right me-1"></i>show</a></td>
                                 </tr>
                             @endforeach

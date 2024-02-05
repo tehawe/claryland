@@ -14,12 +14,13 @@
                 <div class="row">
                     <div class="col p-2 m-3" id="order-invoice">
                         <div class="row justify-content-between">
-                            <div class="col-sm-5">
-                                <img src="/img/claryland-text.png" id="logo" class="w-100" style="margin: -1rem auto 1rem -1rem;" />
+                            <div class="col-sm-8">
+                                <img src="/img/claryland-text.png" id="logo" width="300" style="margin: -1rem auto 1rem -1rem;" />
                                 <p>
                                     Jatinangor Town Square (JATOS)
                                     <br />Jl. Raya Jatinangor No.150, Cikeruh, Kec. Jatinangor, Kabupaten Sumedang, Jawa Barat 45363
                                 </p>
+                                <h5>{{ date_format($order->created_at, 'd-M-Y H:i') }}</h5>
                             </div>
                             <div class="col-sm-4 align-content-center">
                                 <h2>Invoice</h2>
@@ -28,16 +29,19 @@
                             </div>
                         </div>
                         <hr />
-                        <div class="" id="order-customer">
-                            <h6>Invoice To:</h6>
-                            <p>
-                                {{ $order->customer_name }}<br />
-                                {{ $order->customer_contact }}<br />
-                                {{ $order->customer_email }}
-                            </p>
-                        </div>
-                        <div class="" id="order-package">
-                            <h5>{{ $package->name }}</h5>
+                        <div class="row">
+                            <div class="col-sm" id="order-customer">
+                                <h6>Invoice To:</h6>
+                                <p class="ms-3">
+                                    {{ $order->customer_name }}<br />
+                                    {{ $order->customer_contact }}<br />
+                                    {{ $order->customer_email }}
+                                </p>
+                            </div>
+                            <div class="col-sm" id="order-package">
+                                <h6>Package:</h6>
+                                <p class="ms-3">{{ $package === null ? 'Custom Order' : $package->name }}</p>
+                            </div>
                         </div>
                         <div id="order-item">
                             <table class="table table-bordered">
