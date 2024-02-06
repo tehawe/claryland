@@ -21,6 +21,9 @@
             <a class="nav-link d-block rounded {{ Request::is('*users*') ? 'active' : '' }}" href="{{ route('users.index') }}"><i class="bi-person-square me-2"></i>Users</a>
         </li>
         <li class="nav-item">
+            <a class="nav-link d-block rounded {{ Request::is('*contacts*') ? 'active' : '' }}" href="{{ route('contacts') }}"><i class="bi-person-vcard me-2"></i>Contacts</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link d-block rounded {{ Request::is('*reports*') ? 'active' : '' }}" href="{{ route('reports') }}"><i class="bi-archive me-2"></i>Report</a>
         </li>
     </ul>

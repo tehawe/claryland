@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PasswordController;
@@ -132,6 +133,9 @@ Route::middleware('admin')->group(function () {
     Route::get('/dashboard/reports/{date}/daily', [ReportController::class, 'daily'])->name('reports.daily');
     Route::get('/dashboard/reports/{date}/daily/transaction', [ReportController::class, 'dailyTransaction'])->name('reports.daily.transactions');
     Route::get('/dashboard/reports/{date}/daily/stock', [ReportController::class, 'dailyStock'])->name('reports.daily.stock');
+
+    // CUSTOMER CONTACT
+    Route::get('/dashboard/contacts', [ContactController::class, 'index'])->name('contacts');
 });
 
 Route::middleware('auth')->group(function () {
@@ -190,3 +194,6 @@ Route::get('/orders/{order:id}/item/{item:id}/update', [ItemController::class, '
 Route::get('/orders/{order:id}/item/{item:id}/plus', [ItemController::class, 'plus'])->name('orders.item.plus');
 Route::get('/orders/{order:id}/item/{item:id}/min', [ItemController::class, 'min'])->name('orders.item.min');
 Route::get('/orders/{order:id}/item/{item:id}/delete', [ItemController::class, 'delete'])->name('orders.item.delete');
+
+// CUSTOMER CONTACT
+Route::get('/dashboard/contacts', [ContactController::class, 'index'])->name('contacts');
