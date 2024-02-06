@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Package;
 use App\Models\Item;
 use App\Models\Product;
+use App\Models\Settlement;
 use App\Models\Stock;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
 
@@ -60,7 +62,7 @@ class OrderController extends Controller
             'title' => 'Orders',
             'packages' => Package::where('status', 1)->get(),
             'invoice' => $this->newInvoice(),
-            'pendingOrders' => Order::where('status', 0)->withSum('items', 'qty')->withSum('items', 'price')->orderBy('created_at', 'desc')->get(),
+            'pendingOrders' => Order::where('status', 0)->withSum('items', 'qty')->get()
         ]);
     }
 
@@ -152,6 +154,7 @@ class OrderController extends Controller
             'order' => Order::where('invoice', $order->invoice)->first(),
             'package' => Package::where('id', $order->package_id)->first(),
             'items' => Item::where('order_id', $order->id)->with('product')->get(),
+            'settlement' => Settlement::where('status', 1)->get()->last()
         ]);
     }
 
@@ -168,9 +171,13 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
+        $stocks = Stock::where('description', $order->invoice)->get();
+        foreach ($stocks as $stock) {
+            $stock->delete();
+        }
+
         $data = $request->all();
         $data['status'] = 0;
-        $data['amount'] = NULL;
         $data['user_id'] = Auth::user()->id;
         $updateOrder = Order::findOrFail($order->id);
         $updateOrder->fill($data);
@@ -185,6 +192,9 @@ class OrderController extends Controller
         return view('dashboard.transactions.orders.payment', [
             'id' => $order->id,
             'invoice' => $order->invoice,
+            'amount' => $order->amount,
+            'payment_method' => $order->payment_method,
+            'total' => $order->total,
             'package' => Package::where('id', $order->package_id)->first('name'),
             'products' => Product::whereNotIn('id', Item::where('order_id', $order->id)->get('product_id'))->get(),
             'customer' => [
@@ -220,20 +230,6 @@ class OrderController extends Controller
     public function cancel(Order $order)
     {
         $data = Order::where('invoice', $order->invoice)->firstOrFail();
-        $items = Item::where('order_id', $order->id)->get();
-        foreach ($items as $item) {
-            $item->delete();
-        }
-        $data->delete();
-        return back()->with('delete', 'success');
-    }
-
-    /**
-     * Delete miss transactions completed the specified resource from storage.
-     */
-    public function delete(Order $order)
-    {
-        $data = Order::where('invoice', $order->invoice)->firstOrFail();
         $tickets = Ticket::where('order_id', $order->id)->get();
         foreach ($tickets as $ticket) {
             $ticket->delete();
@@ -246,9 +242,29 @@ class OrderController extends Controller
         foreach ($items as $item) {
             $item->delete();
         }
-
         $data->delete();
-        return redirect()->route('sales.show', ['date' => date_format($order->created_at, 'Y-m-d')])->with('delete', 'success');
+        return redirect()->route('orders')->with('delete', 'success');
+    }
+
+    /**
+     * Delete miss transactions completed the specified resource from storage.
+     */
+    public function delete(Order $order)
+    {
+        $stocks = Stock::where('description', $order->invoice)->get();
+        foreach ($stocks as $stock) {
+            $stock->delete();
+        }
+
+        $data['status'] = 0;
+        $data['user_id'] = Auth::user()->id;
+        $data['total'] = NULL;
+        $data['payment_method'] = NULL;
+        $data['amount'] = NULL;
+        $deleteOrder = Order::findOrFail($order->id);
+        $deleteOrder->fill($data);
+        $deleteOrder->save();
+        return redirect()->route('orders')->with('delete', 'success');
     }
 
     public function invoice(Order $order)

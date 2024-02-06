@@ -13,7 +13,6 @@ class ReportController extends Controller
     public function index()
     {
         $reports = Order::selectRaw('id, invoice, total, DATE(created_at) as created_date, created_at, payment_method, package_id')
-            ->where('status', 1)
             ->whereMonth('created_at', now('m'))
             ->withCount('items')
             ->withSum('items', 'qty')
@@ -45,6 +44,7 @@ class ReportController extends Controller
     public function dailyTransaction(string $date)
     {
         $reports = Order::whereDate('created_at', $date)
+            ->where('status', 1)
             ->withCount('items')
             ->withSum('items', 'qty')
             ->orderBy('invoice', 'ASC')

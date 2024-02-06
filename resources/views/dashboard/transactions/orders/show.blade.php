@@ -10,8 +10,9 @@
                     <h2 class="col-md my-1">Invoice</h2>
                     <div class="col-md d-flex my-1 mb-3 justify-content-center">
                         @can('admin')
-                            <a href="{{ route('orders.delete', ['order' => $order->invoice]) }}" onclick="confirm('Are you sure want to delete this completed transactions {{ $order->invoice }} ?')" class="btn btn-sm btn-danger me-1"><i class="bi-trash me-1"></i>Delete</a>
-                            <a href="{{ route('orders.update', ['order' => $order->invoice]) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil-square me-1"></i>Update Trancasctions</a>
+                            @if ($order->created_at > $settlement->updated_at)
+                                <a href="{{ route('orders.update', ['order' => $order->invoice]) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil-square me-1"></i>Update Trancasctions</a>
+                            @endif
                         @endcan
                         @if ($order->package_id)
                             <form action="{{ route('orders.ticket.store') }}" method="POST">
