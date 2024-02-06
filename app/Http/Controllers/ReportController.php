@@ -6,6 +6,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportController extends Controller
 {
@@ -25,19 +26,14 @@ class ReportController extends Controller
 
     public function daily(string $date)
     {
-        $visitors = Order::whereIn('product_id', [1, 2, 3])
-            ->whereDate('created_at', $date)
-            ->get()
-            ->groupBy('product_id');
-
-        $transactions = Item::whereDate('created_at', $date)->get();
-
-        $sales = [];
+        $reports = DB::table('items')
+            ->select('items.product_id', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('MIN(price) price'), DB::raw('(SELECT products.name FROM products  WHERE products.id = items.product_id) AS product_name'))
+            ->whereDate('items.created_at', $date)
+            ->groupBy('product_id')
+            ->get();
 
         return view('dashboard.reports.daily', [
-            'visitors' => $visitors,
-            'transactions' => $transactions,
-            'sales' => $sales,
+            'reports' => $reports,
             'date' => $date
         ]);
     }

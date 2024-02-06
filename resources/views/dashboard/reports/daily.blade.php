@@ -8,20 +8,19 @@
                 <div class="row mb-1">
                     <div class="col-md border me-1">
                         <h5>Visitor</h5>
-                        @foreach ($visitors as $visitor => $data)
-                            {{ $visitor . ' = ' . $data->sum('qty') }}<br />
-                        @endforeach
+                        {{ $reports->whereIn('product_id', [1, 3])->sum('qty') }}
                     </div>
                     <div class="col-md border me-1">
                         <h5>Transactions</h5>
+                        {{ 'Rp ' . number_format($reports->sum('subtotal')) }}
                     </div>
                 </div>
                 <div class="row border">
                     <div class="col-md me-1">
-                        <h5>Sales</h5>
-                        <table>
-                            <thead>
-                                <tr>
+                        <h5>Sales Detail</h5>
+                        <table class="table table-bordered">
+                            <thead class="table-info">
+                                <tr align="center">
                                     <th>No</th>
                                     <th>Product</th>
                                     <th>Price</th>
@@ -30,20 +29,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($sales as $sale)
+                                @foreach ($reports as $report)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $sale->products->name }}</td>
-                                        <td>{{ $sale->price }}</td>
-                                        <td>{{ $sale->sum('qty') }}</td>
-                                        <td>{{ $sale->sum('qty') * $sale->price }}</td>
+                                        <td>{{ $report->product_name }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($report->price) }}</td>
+                                        <td align="center">{{ $report->qty }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($report->subtotal) }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th colspan="4" align="right">Grand Total</th>
-                                    <th>1</th>
+                            <tfoot class="table-info">
+                                <tr align="right">
+                                    <th colspan="4">Grand Total</th>
+                                    <th>{{ 'Rp ' . number_format($reports->sum('subtotal')) }}</th>
                                 </tr>
                             </tfoot>
                         </table>
