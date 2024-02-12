@@ -5,31 +5,30 @@
         <div class="row">
             <div class="col-md">
                 <h1>Dashboard</h1>
-                <div class="content" id="counter">
-                    <div class="row d-flex" id="sales">
-                        <div class="col-md-4 border" id="sales">
-                            <h4>Sales</h4>
-                            <h6>value</h6>
-                            <div class="row justify-content-between" id="info">
-                                <div class="key col">key</div>
-                                <div class="value col text-end">value</div>
-                            </div>
+                <div class="row" id="counter">
+                    <div class="col border rounded p-2 me-2">
+                        <h3>Total Visitor</h3>
+                        <h1>[XX]</h1>
+                        <div class="row">
+                            <div class="col">[XX] Anak</div>
+                            <div class="col">[XX] Pendamping</div>
                         </div>
-
                     </div>
-                    <div class="col-md-4" id="visitors">
-                        <h4>Visitors</h3>
+                    <div class="col border rounded p-2 me-2">
+                        <h3>Total Visitor</h3>
+                        <h1>[XX]</h1>
+                        <div class="row">
+                            <div class="col">[XX] Anak</div>
+                            <div class="col">[XX] Pendamping</div>
+                        </div>
                     </div>
-                    <div class="col-md-4" id="members">
-                        <h4>Members</h4>
-                    </div>
-                </div>
-                <div class="row d-flex">
-                    <div class="col-md-6">
-                        <h4>Package</h4>
-                    </div>
-                    <div class="col-md-6">
-                        <h4>Pengunjung</h3>
+                    <div class="col border rounded p-2 me-2">
+                        <h3>Total Visitor</h3>
+                        <h1>[XX]</h1>
+                        <div class="row">
+                            <div class="col">[XX] Anak</div>
+                            <div class="col">[XX] Pendamping</div>
+                        </div>
                     </div>
                 </div>
             </div>

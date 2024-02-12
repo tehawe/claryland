@@ -2,58 +2,46 @@
 
 @section('container')
     <div class="container" id="package">
-        <div class="row">
-            <div class="col">
-                <h2 class="text-center">Package</h2>
-                <p class="text-center fs-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates fugiat impedit maxime enim libero. Fuga architecto consequatur nostrum eos deserunt cum quas tenetur deleniti itaque, laborum dolorum fugit suscipit eaque aspernatur sint quod. Dignissimos, libero ullam quia, eos quos animi nisi aliquam cum sit amet corporis modi aut atque distinctio.</p>
+        <section id="banner">
+            <img src="" alt="packages" width="100%" />
+        </section>
+        <section id="content">
+            <div class="row">
+                <div class="col mb-4">
+                    <h1 class="text-center mb-5">Paket Harga Tiket</h1>
+                    <p class="fs-4 text-center">Claryland Playground memberikan penawaran menarik dengan 2 tipe harga yaitu Regular/Weekdays dan Weekend/Holiday. Anda dapat bermain sepuasnya dengan anak kesayangan anda. Selain itu, anda juga bisa keluar masuk wahana bermain asalkan tiket tidak rusak/hilang.<br />Menarik bukan ?</p>
+                </div>
             </div>
-        </div>
-        <div class="row row-cols-1 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 g-3 justify-content-center">
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/600x400?playground" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus optio quasi fugit labore nobis dolor? Dolore possimus impedit eligendi, sint laboriosam repellendus earum sapiente reprehenderit.</p>
+            <div class="row justify-content-center mb-3">
+                <div class="col text-center">
+                    <div class="card h-100 text-white" style="background:#FF73AF;">
+                        <div class="card-body">
+                            <h2 class="card-title my-2">Rp 50.000</h2>
+                            <h3 class="card-subtitle mb-4">Regular or Weekdays</h3>
+                            <p class="card-text fs-5">Harga tiket berlaku untuk Senin s/d Jumat selain tanggal merah dan hari libur nasional.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="card h-100 text-white" style="background:#af64ff;">
+                        <div class="card-body">
+                            <h2 class="card-title my-2">Rp 60.000</h2>
+                            <h3 class="card-subtitle mb-4">Weekend or Holidays</h3>
+                            <p class="card-text fs-5">Harga tiket berlaku untuk hari Sabtu s/d Minggu dan hari libur nasional.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/600x400?playgrounds" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellendus optio quasi fugit labore nobis dolor? Dolore possimus impedit eligendi, sint laboriosam repellendus earum sapiente reprehenderit.</p>
-                    </div>
+            <div class="row">
+                <div class="col fs-5">
+                    <ul>
+                        <li>Tiket masuk untuk 1 anak dan 1 pendamping dewasa</li>
+                        <li>Tiap anak harus didampingi 1 pendamping dewasa, tidak diperbolehkan untuk meninggalkan anak bermain sendiri</li>
+                        <li>Pendamping harus berusia 15 tahun ke atas</li>
+                        <li>Baik anak/pendamping wajib memakai kaos kaki selama berada di area bermain</li>
+                    </ul>
                 </div>
             </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/600x400?playgrounds" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Iste recusandae cupiditate est. Harum deserunt hic a error, quia expedita eveniet!</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/600x400?playground" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Tempore accusamus id perferendis non ullam doloremque eligendi qui quam excepturi ab sunt alias iusto omnis placeat, eius, odio magnam sint possimus.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col">
-                <div class="card h-100">
-                    <img src="https://source.unsplash.com/600x400?playgrounds" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quidem accusamus nesciunt quod earum a atque sapiente quas libero voluptates fugiat error hic laborum perspiciatis quam corrupti necessitatibus aspernatur culpa aliquid unde, eaque maxime voluptate. Perspiciatis incidunt nisi atque vero quam.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
 @endsection

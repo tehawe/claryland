@@ -215,6 +215,7 @@ class OrderController extends Controller
         } else {
             $data['amount'] = $request->total;
         }
+        $data['user_id'] = $data['user_id'] = Auth::user()->id;
 
         $updateOrder = Order::findOrFail($order->id);
         $updateOrder->fill($data);
@@ -243,29 +244,9 @@ class OrderController extends Controller
             $item->delete();
         }
         $data->delete();
-        return redirect()->route('orders')->with('delete', 'success');
+        return redirect()->route('orders')->with('cancel', 'success');
     }
 
-    /**
-     * Delete miss transactions completed the specified resource from storage.
-     */
-    public function delete(Order $order)
-    {
-        $stocks = Stock::where('description', $order->invoice)->get();
-        foreach ($stocks as $stock) {
-            $stock->delete();
-        }
-
-        $data['status'] = 0;
-        $data['user_id'] = Auth::user()->id;
-        $data['total'] = NULL;
-        $data['payment_method'] = NULL;
-        $data['amount'] = NULL;
-        $deleteOrder = Order::findOrFail($order->id);
-        $deleteOrder->fill($data);
-        $deleteOrder->save();
-        return redirect()->route('orders')->with('delete', 'success');
-    }
 
     public function invoice(Order $order)
     {

@@ -72,8 +72,6 @@ Route::get('/FAQs', function () {
     ]);
 });
 
-
-
 // LOGIN //
 
 Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
@@ -152,8 +150,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/transactions/orders/{order:invoice}/receipt', [OrderController::class, 'receipt'])->name('orders.receipt');
     Route::get('/transactions/orders/{order:invoice}/invoice', [OrderController::class, 'invoice'])->name('orders.invoice');
 
-    Route::get('/transactions/orders/{order:invoice}/cancel', [OrderController::class, 'delete'])->name('orders.cancel');
-    Route::get('/transactions/orders/{order:invoice}/delete', [OrderController::class, 'delete'])->name('orders.delete');
+    Route::get('/transactions/orders/{order:invoice}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::get('/transactions/orders/{order:invoice}/update', [OrderController::class, 'update'])->name('orders.update');
 

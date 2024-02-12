@@ -6,11 +6,11 @@
         <div class="row py-2">
             <div class="col">
                 <h1 class="border-bottom border-secondary pb-3 mb-3">Contacts</h1>
-                <div class="row">
-                    <table class="data-table table table-bordered">
-                        <thead>
-                            <tr align="center">
-                                <th>No</th>
+                <div class="row rounded">
+                    <table class="data-table table table-bordered table-sm">
+                        <thead class="table-info">
+                            <tr>
+                                <th align="center">No</th>
                                 <th>Name</th>
                                 <th>Contact</th>
                                 <th>Email</th>
@@ -19,9 +19,9 @@
                         <tbody>
                             @foreach ($contacts as $contact)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td align="right">{{ $loop->iteration }}</td>
                                     <td>{{ $contact->name }}</td>
-                                    <td>{{ $contact->contact }}</td>
+                                    <td align="center">{{ $contact->contact }}</td>
                                     <td>{{ $contact->email }}</td>
                                 </tr>
                             @endforeach
