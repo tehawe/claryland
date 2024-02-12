@@ -2,6 +2,11 @@
 
 
 @section('container')
+    <style>
+        .data-table thead tr th {
+            text-align: center;
+        }
+    </style>
     <div class="container-fluid">
         <div class="row py-2">
             <div class="col">
@@ -21,7 +26,6 @@
                                     <th colspan="2">Order Type</th>
                                     <th rowspan="2">All Order</th>
                                     <th colspan="2">Produc/Items</th>
-                                    <th colspan="3">Payment Method</th>
                                     <th rowspan="2">Total</th>
                                     <th rowspan="2"></th>
                                 </tr>
@@ -30,9 +34,7 @@
                                     <th>Custom</th>
                                     <th>Count</th>
                                     <th>Qty</th>
-                                    <th>Cash</th>
-                                    <th>Card</th>
-                                    <th>QRIS</th>
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -45,9 +47,7 @@
                                         <td>{{ $items->count() }}</td>
                                         <td>{{ $items->sum('items_count') }}</td>
                                         <td>{{ $items->sum('items_sum_qty') }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'cash')->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'card')->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' .number_format($items->where('created_date', $reportDate)->where('payment_method', 'qris')->sum('total')) }}</td>
+
                                         <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $reportDate)->sum('total')) }}</td>
                                         <td><a href="{{ route('reports.daily', ['date' => $reportDate]) }}" class="btn btn-sm btn-primary">Check</a></td>
                                     </tr>
