@@ -5,6 +5,9 @@
     </h6>
     <ul class="nav flex-column text-body">
         <li class="nav-item">
+            <a class="nav-link d-block rounded {{ Request::is('*cashier') ? 'active' : '' }}" href="{{ route('dashboard.cashier') }}"><i class="bi-speedometer2 me-2"></i>Dashboard</a>
+        </li>
+        <li class="nav-item">
             <a class="nav-link d-block rounded {{ Request::is('*orders') ? 'active' : '' }}" href="{{ route('orders') }}"><i class="bi-cart me-2"></i>Order</a>
         </li>
         <li class="nav-item">

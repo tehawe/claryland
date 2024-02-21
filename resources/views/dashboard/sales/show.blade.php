@@ -41,7 +41,7 @@
                                     <td align="center">{{ $sale->items_sum_qty }}</td>
                                     <td>
                                         @if (!$sale->package_id)
-                                            Custome
+                                            Custom
                                         @else
                                             Tiket
                                         @endif

@@ -31,7 +31,7 @@ class LoginController extends Controller
             if (auth()->user()->access_type === 1) {
                 return redirect()->intended('dashboard/home');
             } else {
-                return redirect()->intended('transactions/orders');
+                return redirect()->intended('dashboard/cashier');
             }
         }
         return back()->with('loginError', 'Login Failed!');

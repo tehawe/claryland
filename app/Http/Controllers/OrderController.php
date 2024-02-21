@@ -102,7 +102,12 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+
         $order = $request->all();
+        $cekOrder = Order::where('invoice', $order['invoice'])->first();
+        if ($cekOrder) {
+            $order['invoice'] = $this->newInvoice();
+        }
         $order['user_id'] = Auth::user()->id;
         $order = Order::create($order);
 
@@ -128,6 +133,7 @@ class OrderController extends Controller
 
     public function orderCustomCreate(Order $order)
     {
+
         return view('dashboard.transactions.orders.custom', [
             'id' => $order->id,
             'invoice' => $order->invoice,
@@ -138,6 +144,10 @@ class OrderController extends Controller
     public function orderCustomStore(Request $request)
     {
         $order = $request->all();
+        $cekOrder = Order::where('invoice', $order['invoice'])->first();
+        if ($cekOrder) {
+            $order['invoice'] = $this->newInvoice();
+        }
         $order['user_id'] = Auth::user()->id;
         $order = Order::create($order);
 

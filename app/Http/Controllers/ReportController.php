@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use App\Models\Order;
+use App\Models\Package;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -26,14 +27,29 @@ class ReportController extends Controller
     public function daily(string $date)
     {
         $reports = DB::table('items')
-            ->select('items.product_id', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('MIN(price) price'), DB::raw('(SELECT products.name FROM products  WHERE products.id = items.product_id) AS product_name'))
+            ->select('items.product_id', 'items.price', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('(SELECT products.name FROM products WHERE products.id = items.product_id) AS product_name'))
             ->whereDate('items.created_at', $date)
-            ->groupBy('product_id')
+            ->groupBy('product_id', 'price')
             ->get();
 
         return view('dashboard.reports.daily', [
             'reports' => $reports,
             'date' => $date
+        ]);
+    }
+
+
+    public function monthly(string $month)
+    {
+        $reports = DB::table('items')
+            ->select('items.product_id', 'items.price', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('(SELECT products.name FROM products WHERE products.id = items.product_id) AS product_name'))
+            ->whereMonth('items.created_at', date_format(date_create($month), 'm'))->orderBy('product_id')
+            ->groupBy('product_id', 'price')
+            ->get();
+
+        return view('dashboard.reports.monthly', [
+            'reports' => $reports,
+            'month' => $month
         ]);
     }
 

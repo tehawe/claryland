@@ -13,12 +13,26 @@ use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
+
+    public function ticketLast($constanta, $code)
+    {
+        $ticket_code = Ticket::where('ticket_code', '<>', null);
+        $ticket_code = $ticket_code->where('ticket_code', $constanta, $code)->max('ticket_code');
+        return $ticket_code;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('dashboard.transactions.tickets.index');
+        $ticket = Ticket::where('ticket_code', '<>', null);
+
+        $ticketBermain = $this->ticketLast('NOT LIKE', 'CLP%');
+        $ticketPendamping = $this->ticketLast('NOT LIKE', 'CLP+%');
+        $ticketPendampingTambahan = $this->ticketLast('LIKE', 'CLP+%');
+
+
+        return view('dashboard.transactions.tickets.index', compact('ticketBermain', 'ticketPendamping', 'ticketPendampingTambahan'));
     }
 
     /**
@@ -96,7 +110,7 @@ class TicketController extends Controller
      */
     public function validation(Request $request)
     {
-        $ticket = Ticket::where('ticket_code', $request->ticket_code)->firstOrFail();
+        $ticket = Ticket::where('ticket_code', $request->ticket_code)->with('order')->firstOrFail();
         return new TicketResource($ticket);
     }
 }

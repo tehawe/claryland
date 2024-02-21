@@ -4,7 +4,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md">
-                <h3>Daily Report at {{ date_format(new DATETIME($date), 'd-M-Y') }}</h3>
+                <h3>Monthly Report at {{ date_format(new DATETIME($month), 'F Y') }}</h3>
                 <div class="row mb-1">
                     <div class="col-md border me-1 mb-1 p-2">
                         <h5>Visitor</h5>
@@ -14,10 +14,10 @@
                         </div>
                     </div>
                     <div class="col-md border me-1 mb-1 p-2">
-                        <h5>Transactions</h5>
+                        <h5>Sales</h5>
                         <div class="row">
                             <div class="col-sm">Ticket {{ 'Rp ' . number_format($reports->whereIn('product_id', [1, 2, 3])->sum('subtotal')) }}</div>
-                            <div class="col-sm">Non Ticket {{ 'Rp ' . number_format($reports->whereNotIn('product_id', [1, 2, 3])->sum('subtotal')) }}</div>
+                            <div class="col-sm">Other {{ 'Rp ' . number_format($reports->whereNotIn('product_id', [1, 2, 3])->sum('subtotal')) }}</div>
                         </div>
                     </div>
                 </div>
@@ -37,8 +37,17 @@
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $report->product_name }}</td>
+                                        <td align="center">{{ $loop->iteration }}</td>
+                                        <td>
+                                            {{ $report->product_name }}
+                                            @if ($report->price == 25000 && $report->product_id == 1)
+                                                (Soft Opening)
+                                            @elseif($report->price == 60000 && $report->product_id == 1)
+                                                (Weekends or holidays)
+                                            @elseif($report->price == 50000 && $report->product_id == 1)
+                                                (Regular or Weekdays)
+                                            @endif
+                                        </td>
                                         <td align="right">{{ 'Rp ' . number_format($report->price) }}</td>
                                         <td align="center">{{ $report->qty }}</td>
                                         <td align="right">{{ 'Rp ' . number_format($report->subtotal) }}</td>

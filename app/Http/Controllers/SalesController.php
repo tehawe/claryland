@@ -53,7 +53,7 @@ class SalesController extends Controller
     public function show(string $date)
     {
         $user = Auth::user();
-        $sales = Order::whereDate('created_at', $date)->withCount('items')->withSum('items', 'qty')->orderBy('invoice', 'ASC');
+        $sales = Order::whereDate('created_at', $date)->withCount('items')->withSum('items', 'qty')->orderBy('invoice', 'DESC');
         if (!$user->access_type) {
             $sales = $sales->where('user_id', $user->id);
         }

@@ -3,7 +3,7 @@
 @section('container')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-5 me-2">
+            <div class="col-md-5 me-2 border rounded py-3 mb-3 bg-primary bg-gradient bg-opacity-10">
                 <h3 class="border-bottom pb-3">Ticket Order (#{{ $invoice }})</h3>
                 <form action="{{ route('orders.store', ['order' => $invoice]) }}" method="POST">
                     @csrf
@@ -44,17 +44,20 @@
                     @csrf
                     <input type="hidden" name="invoice" id="invoice" value="{{ $invoice }}">
                     <div class="my-3 mb-3 d-flex justify-content-center">
-                        <button class="btn btn-info btn-sm"><i class="bi-basket2 me-1"></i>Create Custom Order</button>
+                        <button class="btn btn-info btn-sm my-auto fs-2 p-3"><i class="bi-basket2 me-1"></i>Create Custom Order</button>
                     </div>
                 </form>
             </div>
+
+        </div>
+        <div class="row">
             @if ($pendingOrders->count())
-                <div class="col me-1" style="font-size: 0.75rem">
+                <div class="col me-1 py-3 mb-3 border border-warning rounded">
                     <h2>Unpaid Order</h2>
                     <table class="table" id="data-table">
-                        <thead>
+                        <thead class="table-warning">
                             <tr>
-                                <th></th>
+                                <th>No</th>
                                 <th>Create At</th>
                                 <th>Order Number</th>
                                 <th>Customer</th>
@@ -71,8 +74,8 @@
                                     <td>{{ $pendingOrder->customer_name }}</td>
                                     <td>{{ $pendingOrder->items_sum_qty }}</td>
                                     <td>
-                                        <a href="@if ($pendingOrder->package_id !== null) {{ route('orders.create', ['order' => $pendingOrder->invoice]) }}@else{{ route('orders.custom.create', ['order' => $pendingOrder->invoice]) }} @endif"><i class="bi-pencil-square me-1"></i>Update</a>
-                                        <a href="{{ route('orders.cancel', ['order' => $pendingOrder->invoice]) }}" onclick="confirm('Are you sure want to cancel this Order {{ $pendingOrder->invoice }} ?')"><i class="bi-trash me-1"></i>Cancel</a>
+                                        <a href="@if ($pendingOrder->package_id !== null) {{ route('orders.create', ['order' => $pendingOrder->invoice]) }}@else{{ route('orders.custom.create', ['order' => $pendingOrder->invoice]) }} @endif" class="btn btn-sm btn-warning me-1"><i class="bi-pencil-square me-1"></i>Update</a>
+                                        <a href="{{ route('orders.cancel', ['order' => $pendingOrder->invoice]) }}" onclick="confirm('Are you sure want to cancel this Order {{ $pendingOrder->invoice }} ?')" class="btn btn-danger btn-sm"><i class="bi-trash me-1"></i>Cancel</a>
                                     </td>
                                 </tr>
                             @endforeach

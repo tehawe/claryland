@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PasswordController;
@@ -82,12 +83,9 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth');
 // BACK END //
 
 // Dashboard Route
-Route::get('/dashboard/home', function () {
-    return view('dashboard.index');
-})->middleware('admin');
-Route::get('/dashboard', function () {
-    return view('dashboard.index');
-})->middleware('admin');
+Route::get('/dashboard/home', [DashboardController::class, 'index'])->name('dashboard')->middleware('admin');
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('admin');
+Route::get('/dashboard/cashier', [DashboardController::class, 'cashierDashboard'])->name('dashboard.cashier')->middleware('auth');
 
 
 // Users
@@ -129,6 +127,7 @@ Route::middleware('admin')->group(function () {
     // Reports
     Route::get('/dashboard/reports', [ReportController::class, 'index'])->name('reports');
     Route::get('/dashboard/reports/{date}/daily', [ReportController::class, 'daily'])->name('reports.daily');
+    Route::get('/dashboard/reports/{month}/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
     Route::get('/dashboard/reports/{date}/daily/transaction', [ReportController::class, 'dailyTransaction'])->name('reports.daily.transactions');
     Route::get('/dashboard/reports/{date}/daily/stock', [ReportController::class, 'dailyStock'])->name('reports.daily.stock');
 
