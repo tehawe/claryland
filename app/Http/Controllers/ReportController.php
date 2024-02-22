@@ -32,9 +32,12 @@ class ReportController extends Controller
             ->groupBy('product_id', 'price')
             ->get();
 
+        $products = Product::with('stocks')->with('items')->orderBy('name', 'ASC')->get();
+
         return view('dashboard.reports.daily', [
             'reports' => $reports,
-            'date' => $date
+            'date' => $date,
+            'products' => $products
         ]);
     }
 

@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $tiketPendamping = $this->ticketLast('NOT LIKE', 'CLP+%');
         $tiketPendampingTambahan = $this->ticketLast('LIKE', 'CLP+%');
 
-        $products = Product::whereNotIn('id', [1, 2, 3])->orderBy('name', 'ASC')->with('stocks')->with('items')->get();
+        $products = Product::orderBy('name', 'ASC')->with('stocks')->with('items')->get();
 
         return view('dashboard.index', compact('counter', 'orders', 'countOrders', 'tiketBermain', 'tiketPendamping', 'tiketPendampingTambahan', 'products'));
     }

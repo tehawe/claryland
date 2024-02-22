@@ -3,7 +3,7 @@
 @section('container')
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md">
+            <div class="col">
                 <h3>Daily Report at {{ date_format(new DATETIME($date), 'd-M-Y') }}</h3>
                 <div class="row mb-1">
                     <div class="col-md border me-1 mb-1 p-2">
@@ -21,10 +21,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="row border">
-                    <div class="col-md me-1 mb-1">
+                <div class="row border mb-2 rounded">
+                    <div class="col py-2">
                         <h5>Sales Detail</h5>
-                        <table class="table table-sm table-bordered">
+                        <table class="table table-sm table-bordered table-hover">
                             <thead class="table-info">
                                 <tr align="center">
                                     <th>No</th>
@@ -51,6 +51,37 @@
                                     <th>{{ 'Rp ' . number_format($reports->sum('subtotal')) }}</th>
                                 </tr>
                             </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="row border mb-2 rounded">
+                    <div class="col py-2">
+                        <h5>Stocks Detail</h5>
+                        <table class="table table-sm table-hover table-bordered">
+                            <thead class="table-primary text-center">
+                                <tr valign="middle">
+                                    <th>No</td>
+                                    <th>Product Name</th>
+                                    <th>Last Stock</th>
+                                    <th>Stock In</th>
+                                    <th>Stock Out</th>
+                                    <th>Current Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td align="center">{{ $loop->iteration }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td align="center">{{ $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out') }}</td>
+                                        <td align="center">{{ $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in') }}</td>
+                                        <td align="center">{{ $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out') }}</td>
+                                        <td align="center">
+                                            {{ $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out') }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>

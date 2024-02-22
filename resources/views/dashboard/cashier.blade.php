@@ -21,12 +21,15 @@
 
             <div class="col-lg border rounded py-2">
                 <h5>Product</h5>
-                <table class="table table-hover table-bordered table-sm">
-                    <thead class="table-primary">
-                        <tr align="center">
+                <table class="table table-sm table-hover table-bordered">
+                    <thead class="table-primary text-center">
+                        <tr valign="middle">
                             <th>No</th>
-                            <th>Product</th>
+                            <th>Product Name</th>
                             <th>Last Stock</th>
+                            <th>Stock In</th>
+                            <th>Stock Out</th>
+                            <th>Current Stock</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,7 +37,12 @@
                             <tr>
                                 <td align="center">{{ $loop->iteration }}</td>
                                 <td>{{ $product->name }}</td>
-                                <td align="center">{{ $product->stocks->sum('stock_in') - $product->stocks->sum('stock_out') }}</td>
+                                <td align="center">{{ $product->stocks->where('created_at', '<', date('Y-m-d') . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', date('Y-m-d') . ' 00:00:00')->sum('stock_out') }}</td>
+                                <td align="center">{{ $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->sum('stock_in') }}</td>
+                                <td align="center">{{ $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', now('d')])->sum('stock_out') }}</td>
+                                <td align="center">
+                                    {{ $product->stocks->where('created_at', '<', now('d') . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', date('Y-m-d') . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', now('d')])->sum('stock_out') }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
