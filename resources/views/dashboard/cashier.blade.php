@@ -62,7 +62,7 @@
                                     <td align="center">{{ $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->sum('stock_in') }}</td>
                                     <td align="center">{{ $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', now('d')])->sum('stock_out') }}</td>
                                     <td align="center">
-                                        {{ $product->stocks->where('created_at', '<', now('d') . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', date('Y-m-d') . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', date('Y-m-d') . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', now('d')])->sum('stock_out') }}
+                                        {{ $product->stocks->where('created_at', '<', now('d') . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', date('Y-m-d') . ' 00:00:00')->sum('stock_out') - $product->stocks->whereBetween('created_at', [date('Y-m-d') . ' 00:00:00', now('d')])->sum('stock_out') }}
                                     </td>
                                 </tr>
                             @endforeach
