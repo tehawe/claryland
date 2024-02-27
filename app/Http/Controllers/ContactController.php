@@ -12,12 +12,7 @@ class ContactController extends Controller
 {
     public function index()
     {
-        $contacts = DB::table('orders')
-            ->distinct()
-            ->select(DB::raw('(CUSTOMER_CONTACT) AS contact'), 'customer_name AS name', 'customer_email as email')
-            ->whereNotNull('customer_contact')
-            ->orderByRaw('`name` ASC')
-            ->get();
+        $contacts = Order::where('customer_contact', 'IS NOT', null)->get()->groupBy('customer_contact');
 
         return view('dashboard.contacts.index', compact('contacts'));
     }

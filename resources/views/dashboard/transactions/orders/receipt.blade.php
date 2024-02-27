@@ -110,7 +110,7 @@
         <div id="info">
             <span id="invoice">Receipt - #{{ $order->invoice }}</span>
             <span id="datetime">{{ date_format($order->updated_at, 'd/m/Y') . ' ' . date_format($order->updated_at, 'H:i') }}</span>
-            <span id="cashier">{{ 'Cashier: ' . Auth::user()->name }}</span>
+            <span id="cashier">{{ 'Cashier: ' . $order->user->name }}</span>
         </div>
         <hr class="line">
         <div id="item">
@@ -130,12 +130,12 @@
                 </thead>
                 <tbody>
                     @foreach ($items as $item)
-                    <tr valign="top">
-                        <td>{{ $item->product->name }}</td>
-                        <td align="right">{{ number_format($item->price) }}</td>
-                        <td align="right">{{ 'x' . $item->qty }}</td>
-                        <td align="right">{{ number_format($item->price * $item->qty) }}</td>
-                    </tr>
+                        <tr valign="top">
+                            <td>{{ $item->product->name }}</td>
+                            <td align="right">{{ number_format($item->price) }}</td>
+                            <td align="right">{{ 'x' . $item->qty }}</td>
+                            <td align="right">{{ number_format($item->price * $item->qty) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <tfoot>
@@ -152,27 +152,27 @@
                     <tr align="right">
                         <th colspan="2">Pay with
                             @switch($order->payment_method)
-                            @case('card')
-                            {{ str()->ucfirst($order->payment_method) }}<br />
-                            <span style="font-size: 0.75rem;">{{ str($order->card_number)->mask('*', 0, -4) }}</span>
-                            @break
+                                @case('card')
+                                    {{ str()->ucfirst($order->payment_method) }}<br />
+                                    <span style="font-size: 0.75rem;">{{ str($order->card_number)->mask('*', 0, -4) }}</span>
+                                @break
 
-                            @case('qris')
-                            {{ str()->upper($order->payment_method) }}
-                            @break
+                                @case('qris')
+                                    {{ str()->upper($order->payment_method) }}
+                                @break
 
-                            @default
-                            {{ str()->ucfirst($order->payment_method) }}
+                                @default
+                                    {{ str()->ucfirst($order->payment_method) }}
                             @endswitch
                         </th>
                         <th colspan="2">{{ 'Rp ' . number_format($order->amount) }}</th>
                     </tr>
                     @if ($order->payment_method === 'cash')
-                    <tr align="right">
-                        <th></th>
-                        <th>Change</th>
-                        <th colspan="2">{{ 'Rp ' . number_format($order->amount - $order->total) }}</th>
-                    </tr>
+                        <tr align="right">
+                            <th></th>
+                            <th>Change</th>
+                            <th colspan="2">{{ 'Rp ' . number_format($order->amount - $order->total) }}</th>
+                        </tr>
                     @endif
                 </tfoot>
             </table>
@@ -180,10 +180,11 @@
     </div>
     <hr class="line">
     <div id="footer">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data={{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=85x85&amp;ecc=L" alt="{{ $order->invoice }}" id="qrcode" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data={{ $order->invoice }}&amp;qzone=1&amp;margin=0&amp;size=85x85&amp;ecc=M" alt="{{ $order->invoice }}" id="qrcode" />
         <div id="customer">
-            {{ $order->customer_name }}<br />{{ $order->customer_contact }}<br />{{ $order->customer_email }}
+            {{ $order->customer_name }}<br />{{ str($order->customer_contact)->mask('*', 4, -4) }}<br />{{ $order->customer_email }}
         </div>
         <h6 id="note">To prove the validity of this ticket, you can scan this QR Code.</h6>
+        <hr />
     </div>
 </div>

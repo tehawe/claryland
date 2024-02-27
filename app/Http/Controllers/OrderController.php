@@ -164,7 +164,8 @@ class OrderController extends Controller
             'order' => Order::where('invoice', $order->invoice)->first(),
             'package' => Package::where('id', $order->package_id)->first(),
             'items' => Item::where('order_id', $order->id)->with('product')->get(),
-            'settlement' => Settlement::where('status', 1)->get()->last()
+            'settlement' => Settlement::where('status', 1)->get()->last(),
+            'tickets' => Ticket::where('order_id', $order->id)->get(),
         ]);
     }
 

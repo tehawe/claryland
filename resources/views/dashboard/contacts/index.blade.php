@@ -10,19 +10,23 @@
                     <table class="data-table table table-bordered table-sm">
                         <thead class="table-info">
                             <tr>
-                                <th align="center">No</th>
-                                <th>Name</th>
+                                <th>No</th>
                                 <th>Contact</th>
-                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Repeat</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($contacts as $contact)
+                            @foreach ($contacts as $contact => $data)
                                 <tr>
                                     <td align="right">{{ $loop->iteration }}</td>
-                                    <td>{{ $contact->name }}</td>
-                                    <td align="center">{{ $contact->contact }}</td>
-                                    <td>{{ $contact->email }}</td>
+                                    <td>{{ $contact }}</td>
+                                    <td>
+                                        @foreach ($data as $contact)
+                                            {{ $contact->customer_name . ' at ' . date_format($contact->created_at, 'd/m/Y') . ',' }}
+                                        @endforeach
+                                    </td>
+                                    <td align="center">{{ $data->count() }}</td>
                                 </tr>
                             @endforeach
                         </tbody>

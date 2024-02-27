@@ -14,7 +14,7 @@
                                 <a href="{{ route('orders.update', ['order' => $order->invoice]) }}" class="btn btn-sm btn-warning me-1"><i class="bi bi-pencil-square me-1"></i>Update Trancasctions</a>
                             @endif
                         @endcan
-                        @if ($order->package_id)
+                        @if ($order->package_id || $items->whereIn('product_id', [1, 2, 3])->count())
                             <form action="{{ route('orders.ticket.store') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="invoice" id="invoice" value="{{ $order->invoice }}">
@@ -75,7 +75,17 @@
                                     @foreach ($items as $item)
                                         <tr>
                                             <td align="right">{{ $loop->iteration }}</td>
-                                            <td>{{ $item->product->name }}</td>
+                                            <td>
+                                                {{ $item->product->name }}<br />
+                                                @if ($item->product_id == 1 || $item->product_id == 2 || $item->product_id == 3)
+                                                    <span style="font-size: 0.85rem;">(
+                                                        @foreach ($tickets->where('product_id', $item->product_id) as $ticket)
+                                                            {{ $ticket->ticket_code }}
+                                                        @endforeach
+                                                        )
+                                                    </span>
+                                                @endif
+                                            </td>
                                             <td align="right">{{ 'Rp ' . number_format($item->price) }}</td>
                                             <td align="right">{{ $item->qty }}</td>
                                             <td align="right">{{ 'Rp ' . number_format($item->qty * $item->price) }}</td>
