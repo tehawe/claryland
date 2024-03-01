@@ -20,11 +20,11 @@ class DashboardController extends Controller
 
     public function index()
     {
-        $counter = DB::table('items')->select('items.product_id', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('MIN(price) price'), DB::raw('(SELECT products.name FROM products  WHERE products.id = items.product_id) AS product_name'))->whereMonth('items.created_at', date_format(now(), 'm'))->groupBy('product_id')->get();
+        $counter = DB::table('items')->select('items.product_id', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('MIN(price) price'), DB::raw('(SELECT products.name FROM products  WHERE products.id = items.product_id) AS product_name'))->whereMonth('items.created_at', now('m'))->groupBy('product_id')->get();
 
         $orders = Order::selectRaw('id, invoice, total, DAY(created_at) as created_date, created_at, payment_method, package_id')->whereMonth('created_at', now('m'))->withCount('items')->withSum('items', 'qty')->orderBy('created_at', 'ASC')->get()->groupBy('created_date');
 
-        $countOrders = Order::where('status', 1)->get();
+        $countOrders = Order::where('status', 1)->whereMonth('created_at', now('m'))->get();
 
         $tiketBermain = $this->ticketLast('NOT LIKE', 'CLP%');
         $tiketPendamping = $this->ticketLast('NOT LIKE', 'CLP+%');

@@ -14,12 +14,11 @@ class ReportController extends Controller
     public function index()
     {
         $reports = Order::selectRaw('id, invoice, total, DATE(created_at) as created_date, created_at, payment_method, package_id')
-            ->whereMonth('created_at', now('m'))
             ->withCount('items')
             ->withSum('items', 'qty')
             ->orderBy('created_at', 'DESC')
             ->get()
-            ->groupBy('created_date');
+            ->groupBy('created_date')->take(100);
 
         return view('dashboard.reports.index', compact('reports'));
     }
