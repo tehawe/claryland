@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md">
                 <h3>Monthly Report at {{ date_format(new DATETIME($month), 'F Y') }}</h3>
-                <div class="row mb-1">
+                <div class="row mb-2">
                     <div class="col-md border me-1 mb-1 p-2">
                         <h5>Visitor</h5>
                         <div class="row">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row border">
+                <div class="row mb-1 border py-2">
                     <div class="col-md me-1 mb-1">
                         <h5>Sales Detail</h5>
                         <table class="table table-sm table-bordered">
@@ -49,7 +49,7 @@
                                             @endif
                                         </td>
                                         <td align="right">{{ 'Rp ' . number_format($report->price) }}</td>
-                                        <td align="center">{{ $report->qty }}</td>
+                                        <td align="center">{{ number_format($report->qty) }}</td>
                                         <td align="right">{{ 'Rp ' . number_format($report->subtotal) }}</td>
                                     </tr>
                                 @endforeach
@@ -60,6 +60,40 @@
                                     <th>{{ 'Rp ' . number_format($reports->sum('subtotal')) }}</th>
                                 </tr>
                             </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="row mb-1 border py-2">
+                    <div class="col-md me-1 mb-1">
+                        <h5>Stocks Detail</h5>
+                        <table class="table table-sm table-hover table-bordered">
+                            <thead class="table-primary">
+                                <tr class="text-center">
+                                    <th>No</th>
+                                    <th>Product Name</th>
+                                    <th>Last Stock</th>
+                                    <th>Stock In</th>
+                                    <th>Stock Out</th>
+                                    <th>Current Stock</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($products as $product)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td align="center">{{ number_format($product->stocks->where('created_at', '<', $firstDay . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $firstDay . ' 00:00:00')->sum('stock_out')) }}</td>
+
+                                        <td align="center">{{ number_format($product->stocks->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_in')) }}</td>
+
+                                        <td align="center">{{ number_format($product->stocks->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_out')) }}</td>
+
+                                        <td align="center">
+                                            {{ number_format($product->stocks->where('created_at', '<', $firstDay . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $firstDay . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_out')) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
                         </table>
                     </div>
                 </div>

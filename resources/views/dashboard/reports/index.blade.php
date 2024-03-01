@@ -12,6 +12,7 @@
             <div class="col">
                 <h1 class="border-bottom border-secondary pb-3 mb-3">Report</h1>
                 <div class="d-flex justify-content-end">
+                    <a href="{{ route('reports.monthly', ['month' => $lastMonth]) }}" class="btn btn-sm btn-primary me-1">Last Month</a>
                     <a href="{{ route('reports.monthly', ['month' => date('Y-m')]) }}" class="btn btn-sm btn-primary me-1">This Month</a>
                     <button class="btn btn-sm btn-primary me-1">Last 3 Month</button>
                     <button class="btn btn-sm btn-primary">Filter</button>

@@ -6,6 +6,8 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Package;
 use App\Models\Product;
+use App\Models\Stock;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +22,10 @@ class ReportController extends Controller
             ->get()
             ->groupBy('created_date')->take(100);
 
-        return view('dashboard.reports.index', compact('reports'));
+        $lastMonth = date_format(Carbon::now()->subMonths(1), 'Y-m');
+
+
+        return view('dashboard.reports.index', compact('reports', 'lastMonth'));
     }
 
     public function daily(string $date)
@@ -49,9 +54,16 @@ class ReportController extends Controller
             ->groupBy('product_id', 'price')
             ->get();
 
+        $products = Product::with('stocks')->orderBy('name', 'ASC')->get();
+
+        $last_day = $month . '-' . Carbon::parse($month . '-01')->lastOfMonth()->day;
+
         return view('dashboard.reports.monthly', [
             'reports' => $reports,
-            'month' => $month
+            'products' => $products,
+            'month' => $month,
+            'firstDay' => $month . '-01',
+            'lastDay' => $last_day,
         ]);
     }
 
