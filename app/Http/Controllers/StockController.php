@@ -143,6 +143,11 @@ class StockController extends Controller
                 ]);
             }
         }
-        return redirect()->route('orders.show', ['order' => $order->invoice]);
+
+        if (!$getOrder->package_id) {
+            return redirect()->route('orders.show', ['order' => $order->invoice]);
+        } else {
+            return redirect()->route('wa.gateway', ['order' => $order->invoice]);
+        }
     }
 }

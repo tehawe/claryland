@@ -26,7 +26,7 @@
                         <h5>Sales Detail</h5>
                         <table class="table table-sm table-bordered table-hover">
                             <thead class="table-info">
-                                <tr align="center">
+                                <tr class="text-center">
                                     <th>No</th>
                                     <th>Product</th>
                                     <th>Price</th>
@@ -37,7 +37,7 @@
                             <tbody>
                                 @foreach ($reports as $report)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td>
+                                        <td align="center">{{ $loop->iteration }}</td>
                                         <td>{{ $report->product_name }}</td>
                                         <td align="right">{{ 'Rp ' . number_format($report->price) }}</td>
                                         <td align="center">{{ $report->qty }}</td>
@@ -73,11 +73,11 @@
                                     <tr>
                                         <td align="center">{{ $loop->iteration }}</td>
                                         <td>{{ $product->name }}</td>
-                                        <td align="center">{{ $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out') }}</td>
-                                        <td align="center">{{ $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in') }}</td>
-                                        <td align="center">{{ $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out') }}</td>
+                                        <td align="center">{{ number_format($product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out')) }}</td>
+                                        <td align="center">{{ number_format($product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in')) }}</td>
+                                        <td align="center">{{ number_format($product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out')) }}</td>
                                         <td align="center">
-                                            {{ $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out') }}
+                                            {{ number_format($product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_in') - $product->stocks->where('created_at', '<', $date . ' 00:00:00')->sum('stock_out') + $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_in') - $product->stocks->whereBetween('created_at', [$date . ' 00:00:00', $date . ' 23:59:59'])->sum('stock_out')) }}
                                         </td>
                                     </tr>
                                 @endforeach

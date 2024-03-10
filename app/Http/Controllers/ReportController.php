@@ -32,11 +32,11 @@ class ReportController extends Controller
     {
         $reports = DB::table('items')
             ->select('items.product_id', 'items.price', DB::raw('SUM(items.qty) qty'), DB::raw('SUM(items.qty * items.price) AS subtotal'), DB::raw('(SELECT products.name FROM products WHERE products.id = items.product_id) AS product_name'))
-            ->whereDate('items.created_at', $date)
+            ->whereDate('items.created_at', $date)->orderBy('product_id', 'ASC')
             ->groupBy('product_id', 'price')
             ->get();
 
-        $products = Product::with('stocks')->with('items')->orderBy('name', 'ASC')->get();
+        $products = Product::with('stocks')->orderBy('id', 'ASC')->get();
 
         return view('dashboard.reports.daily', [
             'reports' => $reports,
@@ -54,8 +54,17 @@ class ReportController extends Controller
             ->groupBy('product_id', 'price')
             ->get();
 
-        $products = Product::with('stocks')->orderBy('name', 'ASC')->get();
+        $products = DB::table('stocks')
+            ->select(
+                'stocks.created_at',
+                'stocks.stock_in',
+                'stocks.stock_out',
+                DB::raw("SUBSTRING_INDEX(stocks.description,'Rp',-1) AS modal"),
+                DB::raw('(SELECT products.name FROM products WHERE products.id = stocks.product_id) AS product_name')
+            )
+            ->orderBy('product_name', 'ASC')->get()->groupBy('product_name');
 
+        dd($products);
         $last_day = $month . '-' . Carbon::parse($month . '-01')->lastOfMonth()->day;
 
         return view('dashboard.reports.monthly', [
@@ -67,9 +76,6 @@ class ReportController extends Controller
         ]);
     }
 
-    public function productSales(string $date)
-    {
-    }
 
     public function dailyTransaction(string $date)
     {

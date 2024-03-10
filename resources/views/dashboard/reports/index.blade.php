@@ -26,15 +26,15 @@
                                     <th rowspan="2">Date</th>
                                     <th colspan="2">Order Type</th>
                                     <th rowspan="2">All Order</th>
-                                    <th colspan="2">Produc/Items</th>
+                                    <th colspan="2">Sales</th>
                                     <th rowspan="2">Total</th>
                                     <th rowspan="2"></th>
                                 </tr>
                                 <tr align="center" valign="middle">
                                     <th>Ticket</th>
                                     <th>Custom</th>
-                                    <th>Count</th>
-                                    <th>Qty</th>
+                                    <th>Ticket</th>
+                                    <th>Non Ticket</th>
 
                                 </tr>
                             </thead>
@@ -46,8 +46,8 @@
                                         <td align="center">{{ $items->where('package_id', '<>', null)->count() }}</td>
                                         <td>{{ $items->where('package_id', null)->count() }}</td>
                                         <td>{{ $items->count() }}</td>
-                                        <td>{{ $items->sum('items_count') }}</td>
-                                        <td>{{ $items->sum('items_sum_qty') }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('package_id', '<>', null)->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('package_id', null)->sum('total')) }}</td>
 
                                         <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $reportDate)->sum('total')) }}</td>
                                         <td><a href="{{ route('reports.daily', ['date' => $reportDate]) }}" class="btn btn-sm btn-primary">Check</a></td>

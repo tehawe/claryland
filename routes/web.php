@@ -1,24 +1,25 @@
 <?php
 
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PackageController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PasswordController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\SalesController;
-use App\Http\Controllers\SettlementController;
-use App\Http\Controllers\StockController;
-use App\Http\Controllers\TicketController;
-use App\Models\Stock;
-use Illuminate\Http\Client\Request as ClientRequest;
-use Illuminate\Support\Facades\Route;
+use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\WAController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SalesController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\PackageController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PasswordController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SettlementController;
+use Illuminate\Http\Client\Request as ClientRequest;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 
 /*
@@ -70,6 +71,14 @@ Route::get('/FAQs', function () {
     return view('FAQs', [
         'title' => 'FAQs',
         'active' => 'FAQs',
+    ]);
+});
+
+Route::get('/invoice/{order:invoice}', function (Order $order) {
+    return view('invoice', [
+        'title' => 'Invoice',
+        'active' => 'Invoice',
+        'order' => Order::where('invoice', $order->invoice)->with('items')->first(),
     ]);
 });
 
@@ -193,3 +202,6 @@ Route::get('/orders/{order:id}/item/{item:id}/delete', [ItemController::class, '
 
 // CUSTOMER CONTACT
 Route::get('/dashboard/contacts', [ContactController::class, 'index'])->name('contacts');
+
+// WHATSAPP API
+Route::get('/wa/gateway/{order:invoice}/send', [WAController::class, 'index'])->name('wa.gateway');

@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-sm">
     <div class="container-fluid col-md-10">
-        <a class="navbar-brand" href="home"><img src="img/claryland-text.png" height="70" /></a>
+        <a class="navbar-brand" href="home"><img src="/img/claryland-text.png" height="70" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
