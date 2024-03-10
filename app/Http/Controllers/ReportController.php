@@ -64,7 +64,6 @@ class ReportController extends Controller
             )
             ->orderBy('product_name', 'ASC')->get()->groupBy('product_name');
 
-        dd($products);
         $last_day = $month . '-' . Carbon::parse($month . '-01')->lastOfMonth()->day;
 
         return view('dashboard.reports.monthly', [

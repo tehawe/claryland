@@ -88,7 +88,7 @@
                                         <td align="center">{{ number_format($stock->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_in')) }}</td>
 
                                         <td align="right">
-                                            {{ 'Rp ' .$stock->where('stock_in', '<>', null)->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('modal') }}
+                                            {{ 'Rp ' .number_format($stock->where('stock_in', '<>', null)->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('modal')) }}
                                         </td>
 
                                         <td align="center">{{ number_format($stock->whereBetween('created_at', [$firstDay . ' 00:00:00', $lastDay . ' 23:59:59'])->sum('stock_out')) }}</td>
