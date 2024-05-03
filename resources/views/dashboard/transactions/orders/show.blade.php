@@ -93,9 +93,14 @@
                                     @endforeach
                                 </tbody>
                                 <tfoot class="table-success">
+
                                     <tr align="right">
                                         <th colspan="4">Total</th>
-                                        <th>{{ 'Rp ' . number_format($order->total) }}</th>
+                                        @if ($order->payment_method == 'cash')
+                                            <th>{{ 'Rp ' . number_format($order->total) }}</th>
+                                        @else
+                                            <th>{{ 'Rp ' . number_format($order->amount) }}</th>
+                                        @endif
                                     </tr>
                                     <tr align="right">
                                         <th colspan="4">
@@ -110,6 +115,7 @@
                                             <th>{{ 'Rp ' . number_format($order->amount - $order->total) }}</th>
                                         </tr>
                                     @endif
+
                                 </tfoot>
                             </table>
                         </div>

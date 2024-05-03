@@ -26,15 +26,16 @@
                                     <th rowspan="2">Date</th>
                                     <th colspan="2">Order Type</th>
                                     <th rowspan="2">All Order</th>
-                                    <th colspan="2">Sales</th>
+                                    <th colspan="3">Payment with</th>
                                     <th rowspan="2">Total</th>
                                     <th rowspan="2"></th>
                                 </tr>
                                 <tr align="center" valign="middle">
                                     <th>Ticket</th>
                                     <th>Custom</th>
-                                    <th>Ticket</th>
-                                    <th>Non Ticket</th>
+                                    <th>Cash</th>
+                                    <th>Card</th>
+                                    <th>QRIS</th>
 
                                 </tr>
                             </thead>
@@ -46,8 +47,9 @@
                                         <td align="center">{{ $items->where('package_id', '<>', null)->count() }}</td>
                                         <td>{{ $items->where('package_id', null)->count() }}</td>
                                         <td>{{ $items->count() }}</td>
-                                        <td align="right">{{ 'Rp ' . number_format($items->where('package_id', '<>', null)->sum('total')) }}</td>
-                                        <td align="right">{{ 'Rp ' . number_format($items->where('package_id', null)->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('payment_method', 'cash')->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('payment_method', 'card')->sum('total')) }}</td>
+                                        <td align="right">{{ 'Rp ' . number_format($items->where('payment_method', 'qris')->sum('total')) }}</td>
 
                                         <td align="right">{{ 'Rp ' . number_format($items->where('created_date', $reportDate)->sum('total')) }}</td>
                                         <td><a href="{{ route('reports.daily', ['date' => $reportDate]) }}" class="btn btn-sm btn-primary">Check</a></td>

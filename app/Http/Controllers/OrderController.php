@@ -223,11 +223,14 @@ class OrderController extends Controller
         $data['status'] = 1;
         if ($request->payment_method === 'cash') {
             $data['amount'] = $request->amount;
+        } else if ($request->payment_method === 'card') {
+            $data['total'] = $request->total - ($request->total * 0.01);
+            $data['amount'] = $request->total;
         } else {
+            $data['total'] = $request->total - ($request->total * 0.007);
             $data['amount'] = $request->total;
         }
         $data['user_id'] = $data['user_id'] = Auth::user()->id;
-
         $updateOrder = Order::findOrFail($order->id);
         $updateOrder->fill($data);
         $updateOrder->save();

@@ -46,7 +46,11 @@
                                             Tiket
                                         @endif
                                     </td>
-                                    <td align="right">{{ 'Rp ' . number_format($sale->total) }}</td>
+                                    @if ($sale->payment_method == 'cash')
+                                        <td align="right">{{ 'Rp ' . number_format($sale->total) }}</td>
+                                    @else
+                                        <td align="right">{{ 'Rp ' . number_format($sale->amount) }}</td>
+                                    @endif
                                     <td>{{ $sale->user->name }}</td>
                                     <td><a class="btn btn-info btn-sm" href="{{ route('orders.show', ['order' => $sale->invoice]) }}"><i class="bi-box-arrow-in-up-right me-1"></i>show</a></td>
                                 </tr>
