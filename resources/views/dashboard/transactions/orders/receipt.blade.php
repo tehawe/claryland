@@ -147,7 +147,11 @@
                     <tr align="right">
                         <th></th>
                         <th>Total</th>
-                        <th colspan="2">{{ 'Rp ' . number_format($order->total) }}</th>
+                        @if ($order->payment_method == 'cash')
+                            <th colspan="2">{{ 'Rp ' . number_format($order->total) }}</th>
+                        @else
+                            <th colspan="2">{{ 'Rp ' . number_format($order->amount) }}</th>
+                        @endif
                     </tr>
                     <tr align="right">
                         <th colspan="2">Pay with
