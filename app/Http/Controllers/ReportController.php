@@ -36,12 +36,21 @@ class ReportController extends Controller
             ->groupBy('product_id', 'price')
             ->get();
 
+        $salesCash = Order::selectRaw('SUM(total) as total')->whereDate('created_at', $date)->where('payment_method', 'cash')->first();
+        $salesCard = Order::selectRaw('SUM(amount) as totalAmount, SUM(amount-total) as total')->whereDate('created_at', $date)->where('payment_method', 'card')->first();
+        $salesQris = Order::selectRaw('SUM(amount) as totalAmount, SUM(amount-total) as total')->whereDate('created_at', $date)->where('payment_method', 'qris')->first();
+
+        //dd($discountCard->total, $discountQris->total);
+
         $products = Product::with('stocks')->orderBy('id', 'ASC')->get();
 
         return view('dashboard.reports.daily', [
             'reports' => $reports,
             'date' => $date,
-            'products' => $products
+            'products' => $products,
+            'salesCash' => $salesCash,
+            'salesCard' => $salesCard,
+            'salesQris' => $salesQris
         ]);
     }
 
@@ -53,6 +62,10 @@ class ReportController extends Controller
             ->whereMonth('items.created_at', date_format(date_create($month), 'm'))->orderBy('product_id')
             ->groupBy('product_id', 'price')
             ->get();
+
+        $salesCash = Order::selectRaw('SUM(total) as total')->whereMonth('created_at', date_format(date_create($month), 'm'))->where('payment_method', 'cash')->first();
+        $salesCard = Order::selectRaw('SUM(amount) as totalAmount, SUM(amount-total) as total')->whereMonth('created_at', date_format(date_create($month), 'm'))->where('payment_method', 'card')->first();
+        $salesQris = Order::selectRaw('SUM(amount) as totalAmount, SUM(amount-total) as total')->whereMonth('created_at', date_format(date_create($month), 'm'))->where('payment_method', 'qris')->first();
 
         $products = DB::table('stocks')
             ->select(
@@ -72,6 +85,9 @@ class ReportController extends Controller
             'month' => $month,
             'firstDay' => $month . '-01',
             'lastDay' => $last_day,
+            'salesCash' => $salesCash,
+            'salesCard' => $salesCard,
+            'salesQris' => $salesQris
         ]);
     }
 

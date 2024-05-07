@@ -35,6 +35,10 @@ class DashboardController extends Controller
 
         $orders = Order::selectRaw('DAY(created_at) as created_date, total')->whereMonth('created_at', now('m'))->get()->groupBy('created_date', 'total');
 
+        $earn = Order::selectRaw('SUM(total) as total')->whereMonth('created_at', now('m'))->first();
+
+        $mdr = Order::selectRaw('SUM(amount-total) as total')->whereMonth('created_at', now('m'))->where('payment_method', '<>', 'cash')->first();
+
         $spends = DB::table('stocks')
             ->select(
                 DB::raw("SUM(SUBSTRING_INDEX(stocks.description,'Rp',-1)) AS modal")
@@ -51,7 +55,7 @@ class DashboardController extends Controller
 
         $products = Product::whereNotIn('id', [1, 2, 3])->with('stocks')->get();
 
-        return view('dashboard.index', compact('counter', 'orders', 'countOrders', 'tiketBermain', 'tiketPendamping', 'tiketPendampingTambahan', 'products', 'sales', 'spends'));
+        return view('dashboard.index', compact('counter', 'orders', 'earn', 'countOrders', 'tiketBermain', 'tiketPendamping', 'tiketPendampingTambahan', 'products', 'sales', 'spends', 'mdr'));
     }
 
 

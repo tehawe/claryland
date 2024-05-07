@@ -20,7 +20,7 @@ class SalesController extends Controller
     {
         $user = Auth::user();
 
-        $sales = Order::selectRaw('id, invoice, total, DATE(created_at) as created_date, created_at, payment_method')
+        $sales = Order::selectRaw('id, invoice, total, amount, DATE(created_at) as created_date, created_at, payment_method')
             ->where('status', 1);
         if (!$user->access_type) {
             $sales = $sales->where('user_id', $user->id);

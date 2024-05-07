@@ -14,10 +14,11 @@
                         </div>
                     </div>
                     <div class="col-md border me-1 mb-1 p-2">
-                        <h5>Transactions</h5>
+                        <h5>Sales</h5>
                         <div class="row">
-                            <div class="col-sm">Ticket {{ 'Rp ' . number_format($reports->whereIn('product_id', [1, 2, 3])->sum('subtotal')) }}</div>
-                            <div class="col-sm">Non Ticket {{ 'Rp ' . number_format($reports->whereNotIn('product_id', [1, 2, 3])->sum('subtotal')) }}</div>
+                            <div class="col-sm"><i class="bi-cash-coin me-1"></i> Cash<br />{{ 'Rp ' . number_format($salesCash->total) }}</div>
+                            <div class="col-sm"><i class="bi-credit-card me-1"></i> Card<br /> {{ 'Rp ' . number_format($salesCard->totalAmount) }}</div>
+                            <div class="col-sm"><i class="bi-qr-code me-1"></i> QRIS<br /> {{ 'Rp ' . number_format($salesQris->totalAmount) }}</div>
                         </div>
                     </div>
                 </div>
@@ -49,6 +50,18 @@
                                 <tr align="right">
                                     <th colspan="4">Grand Total</th>
                                     <th>{{ 'Rp ' . number_format($reports->sum('subtotal')) }}</th>
+                                </tr>
+                                <tr align="right">
+                                    <th colspan="4">MDR Card (1%)</th>
+                                    <th>{{ '- Rp ' . number_format($salesCard->total) }}</th>
+                                </tr>
+                                <tr align="right">
+                                    <th colspan="4">MDR QRIS (0,7%)</th>
+                                    <th>{{ '- Rp ' . number_format($salesQris->total) }}</th>
+                                </tr>
+                                <tr align="right">
+                                    <th colspan="4">Sales Revenue</th>
+                                    <th>{{ 'Rp ' . number_format($reports->sum('subtotal') - $salesCard->total - $salesQris->total) }}</th>
                                 </tr>
                             </tfoot>
                         </table>

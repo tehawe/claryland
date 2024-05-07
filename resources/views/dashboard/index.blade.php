@@ -14,8 +14,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">{{ number_format($countOrders->where('package_id', '<>', null)->count(), 0, ',', '.') }}<br />Tiket</div>
-                            <div class="col">{{ number_format($countOrders->where('package_id', null)->count(), 0, ',', '.') }}<br />Non Ticket</div>
+                            <div class="col-6">Tiket<br />{{ number_format($countOrders->where('package_id', '<>', null)->count(), 0, ',', '.') }}</div>
+                            <div class="col">Custom<br />{{ number_format($countOrders->where('package_id', null)->count(), 0, ',', '.') }}</div>
                         </div>
                     </div>
 
@@ -27,8 +27,8 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">{{ number_format($counter->whereIn('product_id', [1])->sum('qty')) }}<br />Anak</div>
-                            <div class="col">{{ number_format($counter->whereIn('product_id', [2, 3])->sum('qty')) }}<br />Pendamping</div>
+                            <div class="col-6">Anak<br />{{ number_format($counter->whereIn('product_id', [1])->sum('qty')) }}</div>
+                            <div class="col">Pendamping<br />{{ number_format($counter->whereIn('product_id', [2, 3])->sum('qty')) }}</div>
                         </div>
                     </div>
 
@@ -36,12 +36,12 @@
                         <div class="row">
                             <div class="col">
                                 <h3><i class="bi-graph-up-arrow me-2"></i>Earns</h3>
-                                <h2 class="bg-success bg-opacity-50 bg-gradient text-center p-2 rounded">{{ 'Rp ' . number_format($counter->sum('subtotal'), 0, ',', '.') }}</h2>
+                                <h2 class="bg-success bg-opacity-50 bg-gradient text-center p-2 rounded">{{ 'Rp ' . number_format($earn->total, 0, ',', '.') }}</h2>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-6">{{ 'Rp ' . number_format($counter->whereIn('product_id', [1, 2, 3])->sum('subtotal'), 0, ',', '.') }}<br />from tiket</div>
-                            <div class="col">{{ 'Rp ' . number_format($counter->whereNotIn('product_id', [1, 2, 3])->sum('subtotal'), 0, ',', '.') }}<br />from other</div>
+                            <div class="col-6">Total<br />{{ 'Rp ' . number_format($counter->sum('subtotal'), 0, ',', '.') }}</div>
+                            <div class="col">MDR (Card & QRIS)<br />{{ 'Rp ' . number_format($mdr->total) }}</div>
                         </div>
                     </div>
 
@@ -84,8 +84,8 @@
         <div class="row gap-2">
             <div class="col-lg col-md border rounded py-2" id="stocks">
                 <h5>Daily Stocks</h5>
-                <table class="table table-sm table-hover table-responsive">
-                    <thead>
+                <table class="table table-sm table-hover table-bordered table-responsive">
+                    <thead class="table-warning">
                         <tr class="text-center">
                             <th>Product Name</th>
                             <th>last Stock</th>
