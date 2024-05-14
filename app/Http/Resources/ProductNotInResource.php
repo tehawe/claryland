@@ -20,6 +20,7 @@ class ProductNotInResource extends JsonResource
             'price' => $this->price,
             'category_id' => $this->category->id,
             'category_name' => $this->category->name,
+            'stock' => $this->stocks_sum_stock_in - $this->stocks_sum_stock_out,
         ];
     }
 }

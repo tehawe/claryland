@@ -21,9 +21,9 @@ class ItemController extends Controller
     {
         $item = Item::where('order_id', $order->id)->get('product_id');;
         if ($order->package_id !== null) {
-            $product = Product::whereNotIn('id', $item)->get();
+            $product = Product::whereNotIn('id', $item)->withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->get();
         } else {
-            $product = Product::whereNotIn('id', $item)->whereNotIn('id', [1, 2])->get();
+            $product = Product::whereNotIn('id', $item)->whereNotIn('id', [1, 2])->withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->get();
         }
         return (new ProductNotInCollection($product))->response()->setStatusCode(201);
     }
@@ -85,9 +85,20 @@ class ItemController extends Controller
         }
 
         $data = Item::where('id', $item->id)->first();
+
         $data->qty = $request->qty;
-        $data->update();
-        return new ItemResource($item);
+
+        $product = Product::where('id', $item->product_id)->withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->first();
+        $stock = $product->stocks_sum_stock_in - $product->stocks_sum_stock_out;
+
+        if ($data->qty <= $stock) {
+            $data->update();
+            return new ItemResource($item);
+        } else {
+            $data->qty = $stock;
+            $data->update();
+            return new ItemResource($item);
+        }
     }
 
     public function plus(Request $request, Order $order, Item $item): ItemResource
@@ -101,8 +112,16 @@ class ItemController extends Controller
 
         $data = Item::where('id', $item->id)->first();
         $data->qty = $data->qty + 1;
-        $data->update();
-        return new ItemResource($item);
+
+        $product = Product::where('id', $item->product_id)->withSum('stocks', 'stock_in')->withSum('stocks', 'stock_out')->first();
+        $stock = $product->stocks_sum_stock_in - $product->stocks_sum_stock_out;
+
+        if ($data->qty <= $stock) {
+            $data->update();
+            return new ItemResource($item);
+        } else {
+            return new ItemResource($item);
+        }
     }
 
     public function min(Request $request, Order $order, Item $item): ItemResource
