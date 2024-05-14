@@ -22,6 +22,7 @@
                                 <th rowspan="2">Totals</th>
                                 <th rowspan="2">Payment Method</th>
                                 <th rowspan="2">Cashier</th>
+                                <th rowspan="2">Time</th>
                                 <th rowspan="2"></th>
                             </tr>
                             <tr align="center">
@@ -54,6 +55,7 @@
                                     @endif
                                     <td>{{ strToUpper($sale->payment_method) }}</td>
                                     <td>{{ $sale->user->name }}</td>
+                                    <td>{{ date_format($sale->created_at, 'H:i') }}</td>
                                     <td><a class="btn btn-info btn-sm" href="{{ route('orders.show', ['order' => $sale->invoice]) }}"><i class="bi-box-arrow-in-up-right me-1"></i>show</a></td>
                                 </tr>
                             @endforeach
