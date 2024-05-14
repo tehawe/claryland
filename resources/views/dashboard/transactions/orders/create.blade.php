@@ -20,7 +20,7 @@
                     @csrf
                     <div class="input-group">
                         <select class="form-select" id="product_id" name="product_id" required>
-                            <option value="">-- Select Product --</option>
+                            <option value="">--Select Product--</option>
                         </select>
                         <button type="submit" class="btn btn-primary btn-sm" id="btn-add-item"><i class="bi-plus-square me-1"></i>Add Item</button>
                     </div>
@@ -224,11 +224,13 @@
         }
 
         function listProduct(product) {
+            let display = '';
             if (product.stock > 0) {
-                return `<option value="` + product.id + `">` + product.name + `</option>`;
+                display = '';
             } else {
-                return '';
+                display = 'd-none';
             }
+            return `<option value="` + product.id + `" class="` + display + `">` + product.name + `</option>`;
         }
     </script>
 @endsection

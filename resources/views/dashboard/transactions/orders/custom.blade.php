@@ -119,7 +119,13 @@
         }
 
         function listProduct(product) {
-            return `<option value="` + product.id + `">` + product.name + `</option>`;
+            let display = '';
+            if (product.stock > 0) {
+                display = '';
+            } else {
+                display = 'd-none';
+            }
+            return `<option value="` + product.id + `" class="` + display + `">` + product.name + `</option>`;
         }
 
         // Add Item / Product
