@@ -3,13 +3,14 @@
 @section('container')
     <div class="container" id="package">
         <section id="banner">
-            <img src="" alt="packages" width="100%" />
+            <div class="row justify-content-center">
+                <img src="/img/price-list.png" alt="packages" class="w-50" />
+            </div>
         </section>
         <section id="content">
             <div class="row">
                 <div class="col mb-4">
-                    <h1 class="text-center mb-5">Paket Harga Tiket</h1>
-                    <p class="fs-4 text-center">Claryland Playground memberikan penawaran menarik dengan 2 tipe harga yaitu Regular/Weekdays dan Weekend/Holiday. Anda dapat bermain sepuasnya dengan anak kesayangan anda. Selain itu, anda juga bisa keluar masuk wahana bermain asalkan tiket tidak rusak/hilang.<br />Menarik bukan ?</p>
+                    <p class="fs-4 text-center">Claryland Playground memberikan penawaran paket harga tiket menarik dengan 2 tipe harga yaitu Regular/Weekdays dan Weekend/Holiday. Anda dapat bermain sepuasnya dengan anak kesayangan anda. Selain itu, anda juga bisa keluar masuk wahana bermain asalkan tiket tidak rusak/hilang.<br />Menarik bukan ?</p>
                 </div>
             </div>
             <div class="row justify-content-center mb-3">
